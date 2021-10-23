@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using rpg.CallOfCthulhu;
+using rpg.System.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,14 @@ namespace App.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("Attributes")]
+        public IActionResult TestAttributes()
+        {
+            ISystem system = new CallOfCthulhu();
+            var result = system.CharacteristicService.GenerateCharacteristics("Human");
+            return Ok(result);
         }
     }
 }

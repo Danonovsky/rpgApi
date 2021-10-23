@@ -1,12 +1,12 @@
-﻿using rpg.System.Character.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace rpg.System
+namespace rpg.System.Interfaces
 {
     public interface ISystem
     {
         public ICharacterService CharacterService { get; set; }
+        public ICharacteristicService CharacteristicService { get; set; }
     }
 }

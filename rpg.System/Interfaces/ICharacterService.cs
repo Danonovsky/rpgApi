@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace rpg.System.Character.Services
+namespace rpg.System.Interfaces
 {
-    public partial interface ICharacterService
+    public interface ICharacterService
     {
-        public void CreateCharacter();
         public void UpdateCharacter();
         public void UpdateAttribute();
         public void UpdateSkill();
