@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static rpg.CallOfCthulhu.Services.CharacteristicService;
+using static rpg.CallOfCthulhu.Services.SkillService;
 
 namespace rpg.CallOfCthulhu.Models
 {
@@ -25,6 +26,17 @@ namespace rpg.CallOfCthulhu.Models
                     new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Power.ToString()},
                     new Characteristic(new Roll(2,6,6,5)) {Name = Chars.Education.ToString()},
                     new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Luck.ToString()}
+                },
+                Skills = new List<Skill>
+                {
+                    new Skill(1) { Name = Skills.Locksmith.ToString() },
+                    new Skill(20) { Name = Skills.LibraryUse.ToString() },
+                    new Skill(20) { Name = Skills.Listen.ToString() },
+                    new Skill(25) { Name = Skills.SpotHidden.ToString() },
+                    new Skill(25) { Name = Skills.Brawl.ToString() },
+                    new Skill(5) { Name = Skills.FastTalk.ToString() },
+                    new Skill(20) { Name = Skills.Handgun.ToString() },
+                    new Skill(10) { Name = Skills.Psychology.ToString() }
                 }
             }
         };

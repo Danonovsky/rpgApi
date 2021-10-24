@@ -10,5 +10,6 @@ namespace rpg.System.Models
         public string LastName { get; set; }
         public Race Race { get; set; }
         public List<Characteristic> Characteristics { get; set; }
+        public List<Skill> Skills { get; set; }
     }
 }

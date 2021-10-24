@@ -9,6 +9,7 @@ namespace rpg.System.Interfaces
     {
         public ICharacterService CharacterService { get; set; }
         public ICharacteristicService CharacteristicService { get; set; }
+        public ISkillService SkillService { get; set; }
         public Character CreateCharacter();
     }
 }

@@ -9,5 +9,10 @@ namespace rpg.System.Models
         public string Name { get; set; }
         public int Value { get; set; }
         public int Advancement { get; set; }
+
+        public Skill(int value)
+        {
+            Value = value;
+        }
     }
 }
