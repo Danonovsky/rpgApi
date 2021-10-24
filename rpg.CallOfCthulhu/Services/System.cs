@@ -1,5 +1,6 @@
 ﻿using rpg.CallOfCthulhu.Services;
 using rpg.System.Interfaces;
+using rpg.System.Models;
 using System;
 
 namespace rpg.CallOfCthulhu
@@ -13,6 +14,13 @@ namespace rpg.CallOfCthulhu
         {
             CharacterService = new CharacterService();
             CharacteristicService = new CharacteristicService();
+        }
+
+        public Character CreateCharacter()
+        {
+            Character character = new Character();
+            character.Characteristics = CharacteristicService.GenerateCharacteristics("Human");
+            return character;
         }
     }
 }

@@ -16,15 +16,15 @@ namespace rpg.CallOfCthulhu.Models
                 Name = "Human",
                 Characteristics = new List<Characteristic>
                 {
-                    new Characteristic(new Roll(3,6,0)) {Name = Chars.Strength.ToString()},
-                    new Characteristic(new Roll(3,6,0)) {Name = Chars.Constitution.ToString()},
-                    new Characteristic(new Roll(2,6,6)) {Name = Chars.Size.ToString()},
-                    new Characteristic(new Roll(3,6,0)) {Name = Chars.Dexterity.ToString()},
-                    new Characteristic(new Roll(3,6,0)) {Name = Chars.Appearance.ToString()},
-                    new Characteristic(new Roll(2,6,6)) {Name = Chars.Intelligence.ToString()},
-                    new Characteristic(new Roll(3,6,0)) {Name = Chars.Power.ToString()},
-                    new Characteristic(new Roll(2,6,6)) {Name = Chars.Education.ToString()},
-                    new Characteristic(new Roll(3,6,0)) {Name = Chars.Luck.ToString()}
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Strength.ToString()},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Constitution.ToString()},
+                    new Characteristic(new Roll(2,6,6,5)) {Name = Chars.Size.ToString()},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Dexterity.ToString()},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Appearance.ToString()},
+                    new Characteristic(new Roll(2,6,6,5)) {Name = Chars.Intelligence.ToString()},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Power.ToString()},
+                    new Characteristic(new Roll(2,6,6,5)) {Name = Chars.Education.ToString()},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Luck.ToString()}
                 }
             }
         };

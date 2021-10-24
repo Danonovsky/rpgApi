@@ -45,5 +45,26 @@ namespace App.Controllers
             var result = system.CharacteristicService.GenerateCharacteristics("Human");
             return Ok(result);
         }
+
+        [HttpGet("Character/{systemName}")]
+        public IActionResult Character(string systemName)
+        {
+            ISystem system;
+            switch(systemName)
+            {
+                case "Cthulhu":
+                    {
+                        system = new CallOfCthulhu();
+                        break;
+                    }
+                default:
+                    {
+                        system = new CallOfCthulhu();
+                        break;
+                    }
+            }
+            var result = system.CreateCharacter();
+            return Ok(result);
+        }
     }
 }

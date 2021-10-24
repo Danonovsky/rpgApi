@@ -9,12 +9,14 @@ namespace rpg.System.Models
         public int Amount { get; set; }
         public int Dice { get; set; }
         public int Static { get; set; }
+        public int Multiplier { get; set; }
 
-        public Roll(int _amount, int _dice, int _static = 0)
+        public Roll(int _amount, int _dice, int _static = 0, int _multiplier = 1)
         {
             Amount = _amount;
             Dice = _dice;
             Static = _static;
+            Multiplier = _multiplier;
         }
     }
 
@@ -22,6 +24,7 @@ namespace rpg.System.Models
     {
         public List<int> Dices { get; set; } = new List<int>();
         public int Summary { get; set; } = 0;
+        public int SummaryMultipied { get; set; } = 0;
     }
 
     public class RollService
@@ -37,6 +40,7 @@ namespace rpg.System.Models
                 result.Summary += _roll;
             }
             result.Summary += roll.Static;
+            result.SummaryMultipied = result.Summary * roll.Multiplier;
             return result;
         }
     }

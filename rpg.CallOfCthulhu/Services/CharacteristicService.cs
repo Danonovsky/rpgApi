@@ -35,19 +35,19 @@ namespace rpg.CallOfCthulhu.Services
             List<Characteristic> result = race.Characteristics;
             result.ForEach(_ =>
             {
-                _.Value = RollService.Roll(_.Roll).Summary * 5;
+                _.Value = RollService.Roll(_.Roll).SummaryMultipied;
             });
             int hp = (result.FindByName(Chars.Constitution.ToString()).Value +
                 result.FindByName(Chars.Size.ToString()).Value) / 10;
             int movementRate = 7;
 
-            if(result.FindByName(Chars.Strength.ToString()).Value >= result.FindByName(Chars.Strength.ToString()).Value ||
-                result.FindByName(Chars.Dexterity.ToString()).Value >= result.FindByName(Chars.Strength.ToString()).Value)
+            if(result.FindByName(Chars.Strength.ToString()).Value >= result.FindByName(Chars.Size.ToString()).Value ||
+                result.FindByName(Chars.Dexterity.ToString()).Value >= result.FindByName(Chars.Size.ToString()).Value)
             {
                 movementRate = 8;
             }
-            if (result.FindByName(Chars.Strength.ToString()).Value > result.FindByName(Chars.Strength.ToString()).Value || 
-                result.FindByName(Chars.Dexterity.ToString()).Value > result.FindByName(Chars.Strength.ToString()).Value)
+            if (result.FindByName(Chars.Strength.ToString()).Value > result.FindByName(Chars.Size.ToString()).Value || 
+                result.FindByName(Chars.Dexterity.ToString()).Value > result.FindByName(Chars.Size.ToString()).Value)
             {
                 movementRate = 9;
             }

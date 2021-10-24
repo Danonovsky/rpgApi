@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace rpg.System.Models
 {
-    public class Race
+    public class Skill
     {
         public string Name { get; set; }
-        [JsonIgnore]
-        public List<Characteristic> Characteristics { get; set; }
+        public int Value { get; set; }
+        public int Advancement { get; set; }
     }
 }
