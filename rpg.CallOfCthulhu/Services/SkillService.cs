@@ -1,10 +1,12 @@
-﻿using rpg.CallOfCthulhu.Models;
-using rpg.System.Interfaces;
+﻿using rpg.System.Interfaces;
 using rpg.System.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using rpg.CallOfCthulhu.Config;
 using static rpg.CallOfCthulhu.Services.CharacteristicService;
+using Races = rpg.CallOfCthulhu.Models.Races;
 
 namespace rpg.CallOfCthulhu.Services
 {
@@ -31,15 +33,14 @@ namespace rpg.CallOfCthulhu.Services
             OperateHeavyMachinery,
             Persuade, Pharmacy, Photography, Physics, Pilot, Psychoanalysis, Psychology,
             ReadLips, Ride, Rifle,
-            Shotgun, SleightOfhand, Spear, SpotHidden, Stealth, SubmachineGun, Survival, Sword, Swim,
+            Shotgun, SleightOfHand, Spear, SpotHidden, Stealth, SubmachineGun, Survival, Sword, Swim,
             Throw, Track,
             Whip,
             Zoology
         }
         public List<Skill> GenerateSkills(string raceName)
         {
-            Races races = new Races();
-            Race race = races.GetRace(raceName);
+            var race = Races.All.Where(_ => _.Name == raceName).FirstOrDefault();
             List<Skill> result = race.Skills;
             return result;
         }
@@ -47,9 +48,9 @@ namespace rpg.CallOfCthulhu.Services
         public List<Skill> GenerateSkills(string raceName, List<Characteristic> characteristics)
         {
             var result = GenerateSkills(raceName);
-            result.Add(new Skill(characteristics.FindByName(Chars.Dexterity.ToString()).Value / 2) 
+            result.Add(new Skill(characteristics.FindByName(Characteristics.Dexterity).Value / 2) 
             { Name = Skills.Dodge.ToString() });
-            result.Add(new Skill(characteristics.FindByName(Chars.Education.ToString()).Value)
+            result.Add(new Skill(characteristics.FindByName(Characteristics.Education).Value)
             { Name = Skills.LanguageOwn.ToString() });
             return result;
         }

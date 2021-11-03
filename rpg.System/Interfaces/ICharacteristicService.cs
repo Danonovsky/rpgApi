@@ -11,6 +11,8 @@ namespace rpg.System.Interfaces
         /// 
         /// </summary>
         public List<Characteristic> GenerateCharacteristics(string raceName);
+
+        public Characteristic GetCharacteristic(string raceName, string characteristicName);
     }
 
     public static class Extensions

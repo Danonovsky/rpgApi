@@ -3,29 +3,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using rpg.CallOfCthulhu.Config;
 using static rpg.CallOfCthulhu.Services.CharacteristicService;
 using static rpg.CallOfCthulhu.Services.SkillService;
 
 namespace rpg.CallOfCthulhu.Models
 {
-    public class Races
+    public static class Races
     {
-        private List<Race> _races = new List<Race>
+        public static readonly List<Race> All = new List<Race>
         {
             new Race
             {
-                Name = "Human",
+                Name = Config.Races.Human,
                 Characteristics = new List<Characteristic>
                 {
-                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Strength.ToString()},
-                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Constitution.ToString()},
-                    new Characteristic(new Roll(2,6,6,5)) {Name = Chars.Size.ToString()},
-                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Dexterity.ToString()},
-                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Appearance.ToString()},
-                    new Characteristic(new Roll(2,6,6,5)) {Name = Chars.Intelligence.ToString()},
-                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Power.ToString()},
-                    new Characteristic(new Roll(2,6,6,5)) {Name = Chars.Education.ToString()},
-                    new Characteristic(new Roll(3,6,0,5)) {Name = Chars.Luck.ToString()}
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Characteristics.Strength},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Characteristics.Constitution},
+                    new Characteristic(new Roll(2,6,6,5)) {Name = Characteristics.Size},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Characteristics.Dexterity},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Characteristics.Appearance},
+                    new Characteristic(new Roll(2,6,6,5)) {Name = Characteristics.Intelligence},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Characteristics.Power},
+                    new Characteristic(new Roll(2,6,6,5)) {Name = Characteristics.Education},
+                    new Characteristic(new Roll(3,6,0,5)) {Name = Characteristics.Luck}
                 },
                 Skills = new List<Skill>
                 {
@@ -40,10 +41,5 @@ namespace rpg.CallOfCthulhu.Models
                 }
             }
         };
-
-        public Race GetRace(string Name)
-        {
-            return _races.Where(_ => _.Name == Name).FirstOrDefault();
-        }
     }
 }
