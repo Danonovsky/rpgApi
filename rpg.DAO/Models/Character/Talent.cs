@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rpg.DAO.Models.Character
 {
-    public class Talent
+    public class Talent : BaseEntity
     {
         public string Name { get; set; }
         public int Level { get; set; }

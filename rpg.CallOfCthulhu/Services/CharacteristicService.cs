@@ -13,7 +13,7 @@ namespace rpg.CallOfCthulhu.Services
     {
         public List<Characteristic> GenerateCharacteristics(string raceName)
         {
-            var race = Races.All.Where(_ => _.Name == raceName).FirstOrDefault();
+            var race = Races.All.Find(_ => String.Equals(_.Name ,raceName, StringComparison.OrdinalIgnoreCase));
             var result = new List<Characteristic>(race!.Characteristics);
             result.ForEach(_ =>
             {
@@ -49,9 +49,17 @@ namespace rpg.CallOfCthulhu.Services
             return result;
         }
 
-        public Characteristic GetCharacteristic(string raceName, string characteristicName)
+        public RollResult GetCharacteristic(string raceName, string characteristicName)
         {
-            return new Characteristic();
+            var race = Races.All.Find(_ => String.Equals(_.Name ,raceName, StringComparison.OrdinalIgnoreCase));
+            if (race == null || !race!.Characteristics
+                .Any(_ => String.Equals(_.Name ,characteristicName, StringComparison.OrdinalIgnoreCase)))
+            {
+                return null;
+            }
+            var result = race.Characteristics
+                .Find(_ => String.Equals(_.Name ,characteristicName, StringComparison.OrdinalIgnoreCase));
+            return RollService.Roll(result!.Roll);
         }
     }
 }
