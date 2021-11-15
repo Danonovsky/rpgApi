@@ -4,10 +4,11 @@ using System.Text;
 
 namespace rpg.DAO.Models.Character
 {
-    public class Talent : BaseEntity
+    public class Characteristic : BaseEntity
     {
         public string Name { get; set; }
-        public int Level { get; set; }
+        public int Value { get; set; }
+        public int Advancement { get; set; }
 
         public Guid CharacterId { get; set; }
         public virtual Character Character { get; set; }

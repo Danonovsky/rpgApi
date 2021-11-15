@@ -11,9 +11,8 @@ namespace rpg.DAO.Models.Character
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public virtual ICollection<Attribute> Attributes { get; set; }
+        public virtual ICollection<Characteristic> Characteristics { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }
-        public virtual ICollection<Talent> Talents { get; set; }
 
         public Guid CampaignId { get; set; }
         public virtual Campaign Campaign { get; set; }
