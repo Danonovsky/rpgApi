@@ -11,7 +11,7 @@ namespace rpg.DAO
 {
     public class RpgContext : DbContext
     {
-        public RpgContext(DbContextOptions options): base(options)
+        public RpgContext(DbContextOptions options) : base(options)
         {
         }
 
