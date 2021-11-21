@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using rpg.Auth.Models.Request;
 using rpg.Auth.Models.Response;
 using rpg.DAO;
+using rpg.DAO.Models.User;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -58,6 +59,18 @@ namespace rpg.Auth.Services
             {
                 return null;
             }
+        }
+
+        public async Task<bool> Register(SignupRequest request)
+        {   
+            if(request == null) return false;
+            var toDb = new User
+            {
+                Email = request.Email,
+                Password = request.Password
+            };
+
+            return false;
         }
     }
 }
