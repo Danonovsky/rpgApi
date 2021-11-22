@@ -34,5 +34,18 @@ namespace rpg.Auth.Controllers
                 return UnprocessableEntity(request);
             }
         }
+
+        [HttpPost("signup")]
+        public async Task<IActionResult> Register(SignupRequest request)
+        {
+            var result = await _authService.Register(request);
+            if(result)
+            {
+                return Ok();
+            } else
+            {
+                return UnprocessableEntity(request);
+            }
+        }
     }
 }

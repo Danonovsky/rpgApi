@@ -11,7 +11,7 @@ namespace rpg.Auth
 {
     public static class AuthExtension
     {
-        public static IServiceCollection AddAuthExtension(this IServiceCollection services)
+        public static IServiceCollection AddAuthExtension(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(opt =>
             {
@@ -28,7 +28,11 @@ namespace rpg.Auth
 
                     ValidIssuer = "http://localhost:5000",
                     ValidAudience = "http://localhost:5000",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperDuperSecretKey"))
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            configuration.GetSection("AppSettings").GetValue<string>("Secret")
+                            )
+                        )
                 };
             });
             services.AddScoped<IAuthService, AuthService>();

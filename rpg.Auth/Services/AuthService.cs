@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using rpg.Auth.Models.Request;
 using rpg.Auth.Models.Response;
@@ -17,16 +18,21 @@ namespace rpg.Auth.Services
     public interface IAuthService
     {
         public Task<LoginResponse> Login(LoginRequest request);
-        //public IActionResult Register();
+        public Task<bool> Register(SignupRequest request);
 
     }
     public class AuthService : IAuthService
     {
         private RpgContext _rpgContext { get; set; }
+        private IConfiguration _configuration { get; set; }
 
-        public AuthService(RpgContext rpgContext)
+        public AuthService(
+            RpgContext rpgContext,
+            IConfiguration configuration
+            )
         {
             _rpgContext = rpgContext;
+            _configuration = configuration;
         }
         public async Task<LoginResponse> Login(LoginRequest request)
         {
@@ -41,7 +47,9 @@ namespace rpg.Auth.Services
                 .FirstOrDefaultAsync();
             if (dbUser != null)
             {
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperDuperSecretKey"));
+                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                            _configuration.GetSection("AppSettings").GetValue<string>("Secret")
+                            ));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
                 var tokenOptions = new JwtSecurityToken(
@@ -64,13 +72,19 @@ namespace rpg.Auth.Services
         public async Task<bool> Register(SignupRequest request)
         {   
             if(request == null) return false;
+            if (!request.ComparePasswords()) return false;
+            var exists = _rpgContext.Users.Where(_ => _.Email == request.Email).Any();
+            if (exists) return false;
+
             var toDb = new User
             {
                 Email = request.Email,
                 Password = request.Password
             };
+            await _rpgContext.Users.AddAsync(toDb);
+            await _rpgContext.SaveChangesAsync();
 
-            return false;
+            return true;
         }
     }
 }

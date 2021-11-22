@@ -32,7 +32,7 @@ namespace App
         {
             services.AddCors();
             services.AddDbExtension(Configuration);
-            services.AddAuthExtension();
+            services.AddAuthExtension(Configuration);
             services.AddControllers();
         }
 
