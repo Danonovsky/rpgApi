@@ -79,7 +79,8 @@ namespace rpg.Auth.Services
             var toDb = new User
             {
                 Email = request.Email,
-                Password = request.Password
+                Password = request.Password,
+                Name = request.Name
             };
             await _rpgContext.Users.AddAsync(toDb);
             await _rpgContext.SaveChangesAsync();
