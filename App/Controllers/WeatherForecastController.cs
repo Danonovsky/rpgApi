@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using rpg.CallOfCthulhu.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace App.Controllers
 {
@@ -20,10 +22,15 @@ namespace App.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(
+            ILogger<WeatherForecastController> logger,
+            IHttpContextAccessor httpContextAccessor
+            )
         {
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -37,6 +44,14 @@ namespace App.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [Authorize]
+        [HttpGet("User")]
+        public IActionResult GetUser()
+        {
+            var id = _httpContextAccessor.HttpContext.User.Claims.Where(_ => _.Type == "id").First();
+            return Ok(id.Value);
         }
 
         [HttpGet("Attributes")]

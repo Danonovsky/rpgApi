@@ -7,6 +7,8 @@ namespace rpg.DAO.Models.Game
     public class Campaign : BaseEntity
     {
         public string Name { get; set; }
+        public string Description { get; set; }
+        public bool IsPublic { get; set; }
 
         public Guid UserId { get; set; }
         public virtual User.User User { get; set; }

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Campaigns\Controllers\" />
+    <Folder Include="Locations\" />
+    <Folder Include="Characters\" />
+    <Folder Include="Notes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\rpg.Auth\rpg.Auth.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -52,10 +52,15 @@ namespace rpg.Auth.Services
                             ));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
+                var claims = new List<Claim>()
+                {
+                    new Claim("id",dbUser.Id.ToString())
+                };
+
                 var tokenOptions = new JwtSecurityToken(
                     issuer: "http://localhost:5000",
                     audience: "http://localhost:5000",
-                    claims: new List<Claim>(),
+                    claims: claims,
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials: signinCredentials
                     );
