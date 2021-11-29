@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Campaigns\Controllers\" />
     <Folder Include="Locations\" />
     <Folder Include="Characters\" />
     <Folder Include="Notes\" />

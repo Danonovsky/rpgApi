@@ -16,10 +16,11 @@ namespace rpg.Campaign.Campaigns.Services
     {
         public Task<IEnumerable<CampaignResponse>> FindPublicCampaignsAsync();
         public Task<IEnumerable<CampaignResponse>> FindUserCampaignsAsync();
+        public Task<IEnumerable<CampaignResponse>> FindGuestCampaignsAsync();
         public Task<CampaignResponse> GetCampaignAsync(Guid id);
-        public Task<CampaignResponse> AddCampaign(CampaignRequest request);
-        public CampaignResponse EditCampaign(CampaignRequest request, Guid id);
-        public bool DeleteCampaign(Guid id);
+        public Task<CampaignResponse> AddCampaignAsync(CampaignRequest request);
+        public Task<CampaignResponse> EditCampaignAsync(CampaignRequest request, Guid id);
+        public Task<bool> DeleteCampaignAsync(Guid id);
     }
 
     public class CampaignService : ICampaignService
@@ -54,6 +55,16 @@ namespace rpg.Campaign.Campaigns.Services
             return result;
         }
 
+        public async Task<IEnumerable<CampaignResponse>> FindGuestCampaignsAsync()
+        {
+            var userId = _httpContextAccessor.GetUserId();
+            var result = await _rpgContext.Campaigns
+                .Where(_ => _.CampaignPlayers.Any(_ => _.UserId == userId))
+                .Select(_ => new CampaignResponse(_))
+                .ToListAsync();
+            return result;
+        }
+
         public async Task<CampaignResponse> GetCampaignAsync(Guid id)
         {
             var result = await _rpgContext.Campaigns
@@ -63,7 +74,7 @@ namespace rpg.Campaign.Campaigns.Services
             return result;
         }
 
-        public async Task<CampaignResponse> AddCampaign(CampaignRequest request)
+        public async Task<CampaignResponse> AddCampaignAsync(CampaignRequest request)
         {
             var userId = _httpContextAccessor.GetUserId();
             if (_rpgContext.Campaigns.Any(_ => _.Name == request.Name)) return null;
@@ -81,19 +92,25 @@ namespace rpg.Campaign.Campaigns.Services
 
         }
 
-        public bool DeleteCampaign(Guid id)
+        public async Task<bool> DeleteCampaignAsync(Guid id)
         {
-            throw new NotImplementedException();
+            _rpgContext.Campaigns.Remove(
+                await _rpgContext.Campaigns.Where(_ => _.Id == id).FirstOrDefaultAsync());
+            var result = await _rpgContext.SaveChangesAsync();
+            return result > 0;
         }
 
-        public CampaignResponse EditCampaign(CampaignRequest request, Guid id)
+        public async Task<CampaignResponse> EditCampaignAsync(CampaignRequest request, Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<CampaignResponse> FindCampaigns(bool isPublic)
-        {
-            throw new NotImplementedException();
+            var fromDb = await _rpgContext.Campaigns.Where(_ => _.Id == id).FirstOrDefaultAsync();
+            if (fromDb == null) return null;
+            fromDb.Name = request.Name;
+            fromDb.Description = request.Description;
+            fromDb.IsPublic = request.IsPublic;
+            _rpgContext.Campaigns.Update(fromDb);
+            var result = await _rpgContext.SaveChangesAsync();
+            if (result > 0) return new CampaignResponse(fromDb);
+            else return null;
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using rpg.Auth;
+using rpg.Campaign;
 using rpg.DAO;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace App
             services.AddCors();
             services.AddDbExtension(Configuration);
             services.AddAuthExtension(Configuration);
+            services.AddCampaignExtension();
             services.AddControllers();
         }
 
