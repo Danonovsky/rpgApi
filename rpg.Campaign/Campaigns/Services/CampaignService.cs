@@ -40,6 +40,7 @@ namespace rpg.Campaign.Campaigns.Services
         {
             var result = await _rpgContext.Campaigns
                 .Where(_ => _.IsPublic)
+                .Include(_ => _.User)
                 .Select(_ => new CampaignResponse(_))
                 .ToListAsync();
             return result;
@@ -50,6 +51,7 @@ namespace rpg.Campaign.Campaigns.Services
             var userId = _httpContextAccessor.GetUserId();
             var result = await _rpgContext.Campaigns
                 .Where(_ => _.UserId == userId)
+                .Include(_ => _.User)
                 .Select(_ => new CampaignResponse(_))
                 .ToListAsync();
             return result;
@@ -60,6 +62,7 @@ namespace rpg.Campaign.Campaigns.Services
             var userId = _httpContextAccessor.GetUserId();
             var result = await _rpgContext.Campaigns
                 .Where(_ => _.CampaignPlayers.Any(_ => _.UserId == userId))
+                .Include(_ => _.User)
                 .Select(_ => new CampaignResponse(_))
                 .ToListAsync();
             return result;

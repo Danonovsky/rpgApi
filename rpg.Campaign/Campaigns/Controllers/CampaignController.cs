@@ -32,14 +32,14 @@ namespace rpg.Campaign.Controllers
             return Ok(await _campaignService.FindPublicCampaignsAsync());
         }
 
-        [HttpGet("User")]
+        [HttpGet("user")]
         [Authorize]
         public async Task<IActionResult> FindUserCampaigns()
         {
             return Ok(await _campaignService.FindUserCampaignsAsync());
         }
 
-        [HttpGet("Guest")]
+        [HttpGet("guest")]
         [Authorize]
         public async Task<IActionResult> FindGuestCampaigns()
         {

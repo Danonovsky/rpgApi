@@ -19,7 +19,8 @@ namespace rpg.Campaign.Campaigns.Models.Response
             Name = campaign.Name;
             Description = campaign.Description;
             IsPublic = campaign.IsPublic;
-            User = new PublicUserResponse(campaign.User);
+            if(campaign.User != null)
+                User = new PublicUserResponse(campaign.User);
         }
     }
 }
