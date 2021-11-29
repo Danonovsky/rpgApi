@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rpg.CallOfCthulhu", "..\rpg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg.Campaign", "..\rpg.Campaign\rpg.Campaign.csproj", "{83FDE719-7FD4-4378-BEF8-317833355BF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg.Common", "..\rpg.Common\rpg.Common.csproj", "{6B95EA95-FFD5-4C9F-9080-233A9910CA22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{83FDE719-7FD4-4378-BEF8-317833355BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83FDE719-7FD4-4378-BEF8-317833355BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83FDE719-7FD4-4378-BEF8-317833355BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B95EA95-FFD5-4C9F-9080-233A9910CA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B95EA95-FFD5-4C9F-9080-233A9910CA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B95EA95-FFD5-4C9F-9080-233A9910CA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B95EA95-FFD5-4C9F-9080-233A9910CA22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

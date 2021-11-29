@@ -12,5 +12,14 @@ namespace rpg.Campaign.Campaigns.Models.Response
         public string Description { get; set; }
         public bool IsPublic { get; set; }
         public PublicUserResponse User { get; set; }
+
+        public CampaignResponse(DAO.Models.Game.Campaign campaign)
+        {
+            Id = campaign.Id;
+            Name = campaign.Name;
+            Description = campaign.Description;
+            IsPublic = campaign.IsPublic;
+            User = new PublicUserResponse(campaign.User);
+        }
     }
 }
