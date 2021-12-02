@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using rpg.Campaign.Campaigns.Models.Request;
 using rpg.Campaign.Campaigns.Models.Response;
+using rpg.Common;
 using rpg.Common.Helpers;
 using rpg.DAO;
 using System;
@@ -72,6 +73,7 @@ namespace rpg.Campaign.Campaigns.Services
         {
             var result = await _rpgContext.Campaigns
                 .Where(_ => _.Id == id)
+                .Include(_ => _.User)
                 .Select(_ => new CampaignResponse(_))
                 .FirstOrDefaultAsync();
             return result;
@@ -80,19 +82,20 @@ namespace rpg.Campaign.Campaigns.Services
         public async Task<CampaignResponse> AddCampaignAsync(CampaignRequest request)
         {
             var userId = _httpContextAccessor.GetUserId();
+            if (Config.Systems.Equals(request.System)) return null;
             if (_rpgContext.Campaigns.Any(_ => _.Name == request.Name)) return null;
             var model = new DAO.Models.Game.Campaign
             {
                 Name = request.Name,
                 Description = request.Description,
                 IsPublic = request.IsPublic,
+                System = Config.Systems.Where(_ => _ == request.System).First(),
                 UserId = userId
             };
             _rpgContext.Campaigns.Add(model);
             var result = await _rpgContext.SaveChangesAsync();
             if (result > 0) return new CampaignResponse(model);
             else return null;
-
         }
 
         public async Task<bool> DeleteCampaignAsync(Guid id)
