@@ -22,6 +22,7 @@ namespace rpg.Campaign.Campaigns.Services
         public Task<CampaignResponse> AddCampaignAsync(CampaignRequest request);
         public Task<CampaignResponse> EditCampaignAsync(CampaignRequest request, Guid id);
         public Task<bool> DeleteCampaignAsync(Guid id);
+        public Task<SetImageUrlResponse> SetUrl(SetImageUrlRequest request);
     }
 
     public class CampaignService : ICampaignService
@@ -117,6 +118,11 @@ namespace rpg.Campaign.Campaigns.Services
             var result = await _rpgContext.SaveChangesAsync();
             if (result > 0) return new CampaignResponse(fromDb);
             else return null;
+        }
+
+        public async Task<SetImageUrlResponse> SetUrl(SetImageUrlRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }
