@@ -83,5 +83,15 @@ namespace rpg.Campaign.Controllers
             if (result) return Ok(result);
             else return UnprocessableEntity();
         }
+
+        [HttpPatch("{id}")]
+        [Authorize]
+        public async Task<IActionResult> SetUrl(Guid id)
+        {
+            if(id == null) return BadRequest();
+            var result = await _campaignService.SetUrl(id);
+            if (result == null) return BadRequest();
+            return Ok(result);
+        }
     }
 }

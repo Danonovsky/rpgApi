@@ -7,6 +7,7 @@ using rpg.Common.Helpers;
 using rpg.DAO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace rpg.Campaign.Campaigns.Services
         public Task<CampaignResponse> AddCampaignAsync(CampaignRequest request);
         public Task<CampaignResponse> EditCampaignAsync(CampaignRequest request, Guid id);
         public Task<bool> DeleteCampaignAsync(Guid id);
-        public Task<SetImageUrlResponse> SetUrl(SetImageUrlRequest request);
+        public Task<SetImageUrlResponse> SetUrl(Guid id);
     }
 
     public class CampaignService : ICampaignService
@@ -120,9 +121,40 @@ namespace rpg.Campaign.Campaigns.Services
             else return null;
         }
 
-        public async Task<SetImageUrlResponse> SetUrl(SetImageUrlRequest request)
+        public async Task<SetImageUrlResponse> SetUrl(Guid id)
         {
-            throw new NotImplementedException();
+            var item = await _rpgContext.Campaigns.Where(_ => _.Id == id).FirstOrDefaultAsync();
+            if (item == null) return null;
+            try
+            {
+                var file = _httpContextAccessor.HttpContext.Request.Form.Files[0];
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if(file.Length > 0)
+                {
+                    var fileName = Guid.NewGuid() + "." + file.FileName.Split(".").Last();
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var fs = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fs);
+                    }
+                    item.ImageUrl = dbPath;
+                    _rpgContext.Update(item);
+                    int result = await _rpgContext.SaveChangesAsync();
+                    if (result == 0) return null;
+                    return new SetImageUrlResponse
+                    {
+                        Url = dbPath
+                    };
+                } else
+                {
+                    return null;
+                }
+            } catch(Exception)
+            {
+                return null;
+            }
         }
     }
 }
