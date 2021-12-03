@@ -10,7 +10,7 @@ namespace rpg.DAO.Models.Game
         public string Description { get; set; }
         public bool IsPublic { get; set; }
         public string System { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         public Guid UserId { get; set; }
         public virtual User.User User { get; set; }
