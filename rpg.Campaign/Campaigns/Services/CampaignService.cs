@@ -162,7 +162,7 @@ namespace rpg.Campaign.Campaigns.Services
         {
             //
             var userId = _httpContextAccessor.GetUserId();
-            var campaign = await _rpgContext.Campaigns.Where(_ => _.UserId == id).FirstOrDefaultAsync();
+            var campaign = await _rpgContext.Campaigns.Where(_ => _.Id == id).FirstOrDefaultAsync();
             if(campaign == null) return false;
             bool alreadyJoined = (await _rpgContext.Campaigns.Where(_ => _.CampaignPlayers.Any(_ => _.UserId == userId)).ToListAsync()).Count != 0;
             if (alreadyJoined) return false;
