@@ -24,6 +24,7 @@ namespace rpg.Campaign.Campaigns.Services
         public Task<CampaignResponse> EditCampaignAsync(CampaignRequest request, Guid id);
         public Task<bool> DeleteCampaignAsync(Guid id);
         public Task<SetImageUrlResponse> SetUrl(Guid id);
+        public Task<bool> JoinCampaign(Guid id);
     }
 
     public class CampaignService : ICampaignService
@@ -155,6 +156,22 @@ namespace rpg.Campaign.Campaigns.Services
             {
                 return null;
             }
+        }
+
+        public async Task<bool> JoinCampaign(Guid id)
+        {
+            //
+            var userId = _httpContextAccessor.GetUserId();
+            var campaign = await _rpgContext.Campaigns.Where(_ => _.UserId == id).FirstOrDefaultAsync();
+            if(campaign == null) return false;
+            bool alreadyJoined = (await _rpgContext.Campaigns.Where(_ => _.CampaignPlayers.Any(_ => _.UserId == userId)).ToListAsync()).Count != 0;
+            if (alreadyJoined) return false;
+            _rpgContext.CampaignPlayers.Add(new DAO.Models.Game.CampaignPlayer
+            {
+                CampaignId = id,
+                UserId = userId
+            });
+            return await _rpgContext.SaveChangesAsync() > 0;
         }
     }
 }

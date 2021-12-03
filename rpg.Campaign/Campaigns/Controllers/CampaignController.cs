@@ -93,5 +93,14 @@ namespace rpg.Campaign.Controllers
             if (result == null) return BadRequest();
             return Ok(result);
         }
+
+        [HttpGet("Join/{id}")]
+        [Authorize]
+        public async Task<IActionResult> JoinCampaign(Guid id)
+        {
+            var result = await _campaignService.JoinCampaign(id);
+            if (result) return Ok(result);
+            else return BadRequest();
+        }
     }
 }
