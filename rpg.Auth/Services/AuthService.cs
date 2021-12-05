@@ -54,7 +54,8 @@ namespace rpg.Auth.Services
 
                 var claims = new List<Claim>()
                 {
-                    new Claim("id",dbUser.Id.ToString())
+                    new Claim("id", dbUser.Id.ToString()),
+                    new Claim("name", dbUser.Name)
                 };
 
                 var tokenOptions = new JwtSecurityToken(
