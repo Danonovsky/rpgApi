@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\rpg.Common\rpg.Common.csproj" />
+  </ItemGroup>
+
 </Project>

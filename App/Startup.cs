@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using rpg.Auth;
 using rpg.Campaign;
 using rpg.DAO;
+using rpg.Game.Hubs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +47,7 @@ namespace App
             services.AddDbExtension(Configuration);
             services.AddAuthExtension(Configuration);
             services.AddCampaignExtension();
+            services.AddSignalR();
             services.AddControllers();
         }
 
@@ -67,7 +69,12 @@ namespace App
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(
+                x => x.WithOrigins("http://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                );
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -75,6 +82,7 @@ namespace App
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<GameHub>("/game");
             });
         }
     }

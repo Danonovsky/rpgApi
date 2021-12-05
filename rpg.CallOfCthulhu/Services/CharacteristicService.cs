@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using rpg.CallOfCthulhu.Config;
 using Races = rpg.CallOfCthulhu.Models.Races;
+using rpg.Common.Models;
+using rpg.Common.Services;
 
 namespace rpg.CallOfCthulhu.Services
 {

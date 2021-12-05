@@ -1,4 +1,5 @@
-﻿using rpg.System.Models;
+﻿using rpg.Common.Models;
+using rpg.System.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\rpg.Common\rpg.Common.csproj" />
-    <ProjectReference Include="..\rpg.System\rpg.System.csproj" />
   </ItemGroup>
 
 </Project>

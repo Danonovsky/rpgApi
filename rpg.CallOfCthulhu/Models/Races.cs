@@ -6,6 +6,7 @@ using System.Text;
 using rpg.CallOfCthulhu.Config;
 using static rpg.CallOfCthulhu.Services.CharacteristicService;
 using static rpg.CallOfCthulhu.Services.SkillService;
+using rpg.Common.Models;
 
 namespace rpg.CallOfCthulhu.Models
 {
