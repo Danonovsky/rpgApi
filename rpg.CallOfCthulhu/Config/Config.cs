@@ -18,9 +18,9 @@ namespace rpg.CallOfCthulhu.Config
         public const string Education = "Education";
         public const string Luck = "Luck";
         public const string Sanity = "Sanity";
-        public const string HitPoints = "Hit Points";
-        public const string HitPointsMax = "Max Hit Points";
+        public const string HitPoints = "HP";
+        public const string HitPointsMax = "Max HP";
         public const string MagicPoints = "Magic Points";
-        public const string MovementRate = "Movement Rate";
+        public const string MovementRate = "Movement";
     }
 }

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using rpg.CallOfCthulhu.Config;
-using static rpg.CallOfCthulhu.Services.CharacteristicService;
 using Races = rpg.CallOfCthulhu.Models.Races;
 
 namespace rpg.CallOfCthulhu.Services
@@ -41,7 +40,7 @@ namespace rpg.CallOfCthulhu.Services
         public List<Skill> GenerateSkills(string raceName)
         {
             var race = Races.All.Where(_ => _.Name == raceName).FirstOrDefault();
-            List<Skill> result = race.Skills;
+            List<Skill> result = race.Skills.ToList();
             return result;
         }
 
