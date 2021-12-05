@@ -9,6 +9,7 @@ namespace rpg.Campaign.Characters.Services
     public interface ICharacterService
     {
         public Character RollCharacter(string systemName);
+        public bool AddCharacter();
     }
     public class CharacterService : ICharacterService
     {
@@ -30,6 +31,11 @@ namespace rpg.Campaign.Characters.Services
             }
             var result = system.CreateCharacter();
             return result;
+        }
+
+        public bool AddCharacter()
+        {
+            throw new NotImplementedException();
         }
     }
 }
