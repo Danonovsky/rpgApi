@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Characters\Models\Response\" />
     <Folder Include="Locations\" />
     <Folder Include="Notes\" />
   </ItemGroup>

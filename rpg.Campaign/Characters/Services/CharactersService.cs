@@ -1,4 +1,6 @@
-﻿using rpg.Campaign.Characters.Models.Request;
+﻿using Microsoft.EntityFrameworkCore;
+using rpg.Campaign.Characters.Models.Request;
+using rpg.Campaign.Characters.Models.Response;
 using rpg.DAO;
 using rpg.System.Interfaces;
 using rpg.System.Models;
@@ -12,6 +14,7 @@ namespace rpg.Campaign.Characters.Services
 {
     public interface ICharacterService
     {
+        public Task<List<CharacterSimpleResponse>> GetAll(Guid campaignId);
         public Character RollCharacter(CharacterRollRequest request);
         public Task<bool> AddCharacter(AddCharacterRequest request);
         public List<Characteristic> RollAttributes(CharacterRollRequest request);
@@ -26,6 +29,21 @@ namespace rpg.Campaign.Characters.Services
             RpgContext rpgContext)
         {
             _rpgContext = rpgContext;
+        }
+
+        public async Task<List<CharacterSimpleResponse>> GetAll(Guid campaignId)
+        {
+            var result = await _rpgContext.Characters
+                .Where(_ => _.CampaignId == campaignId)
+                .Select(_ => 
+                    new CharacterSimpleResponse
+                    {
+                        Id = _.Id,
+                        FirstName = _.FirstName,
+                        LastName = _.LastName
+                    })
+                .ToListAsync();
+            return result;
         }
 
         public Character RollCharacter(CharacterRollRequest request)

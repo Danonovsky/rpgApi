@@ -15,10 +15,19 @@ namespace rpg.Campaign.Characters.Controllers
         private readonly ICharacterService _characterService;
 
         public CharacterController(
-            ICharacterService characterService)
+            ICharacterService characterService
+            )
         {
             _characterService = characterService;
         }
+
+        [HttpGet("{campaignId}")]
+        public async Task<IActionResult> GetAll(Guid campaignId)
+        {
+            var result = await _characterService.GetAll(campaignId);
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add(AddCharacterRequest request)
         {
