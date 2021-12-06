@@ -10,6 +10,8 @@ namespace rpg.System.Models
         public int Value { get; set; }
         public int Advancement { get; set; }
 
+        public Skill() { }
+
         public Skill(int value)
         {
             Value = value;

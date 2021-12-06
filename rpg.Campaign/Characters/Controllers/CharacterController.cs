@@ -4,6 +4,7 @@ using rpg.Campaign.Characters.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace rpg.Campaign.Characters.Controllers
 {
@@ -18,10 +19,17 @@ namespace rpg.Campaign.Characters.Controllers
         {
             _characterService = characterService;
         }
-        [HttpPost("Add")]
-        public IActionResult Add()
+        [HttpPost]
+        public async Task<IActionResult> Add(AddCharacterRequest request)
         {
-            return Ok();
+            var result = await _characterService.AddCharacter(request);
+            if (result)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost("RollAll")]
