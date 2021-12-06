@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using rpg.Campaign.Characters.Models.Request;
 using rpg.Campaign.Characters.Services;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace rpg.Campaign.Characters.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CharacterController: ControllerBase
+    public class CharacterController : ControllerBase
     {
         private readonly ICharacterService _characterService;
 
@@ -23,10 +24,24 @@ namespace rpg.Campaign.Characters.Controllers
             return Ok();
         }
 
-        [HttpGet("RollAll/{systemName}")]
-        public IActionResult Character(string systemName)
+        [HttpPost("RollAll")]
+        public IActionResult Character(CharacterRollRequest request)
         {
-            var result = _characterService.RollCharacter(systemName);
+            var result = _characterService.RollCharacter(request);
+            return Ok(result);
+        }
+
+        [HttpPost("RollAttributes")]
+        public IActionResult RollAttributes(CharacterRollRequest request)
+        {
+            var result = _characterService.RollAttributes(request);
+            return Ok(result);
+        }
+
+        [HttpGet("Races/{systemName}")]
+        public IActionResult GetRaces(string systemName)
+        {
+            var result = _characterService.GetRaces(systemName);
             return Ok(result);
         }
     }

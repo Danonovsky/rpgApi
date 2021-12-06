@@ -59,7 +59,7 @@ namespace App.Controllers
                         break;
                     }
             }
-            var result = system.CreateCharacter();
+            var result = system.CreateCharacter("Human");
             return Ok(result);
         }
     }
