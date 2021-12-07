@@ -21,6 +21,14 @@ namespace rpg.Campaign.Characters.Controllers
             _characterService = characterService;
         }
 
+        [HttpGet("Get/{characterId}")]
+        public async Task<IActionResult> Get(Guid characterId)
+        {
+            var result = await _characterService.Get(characterId);
+            if(result == null) return NotFound();
+            else return Ok(result);
+        }
+
         [HttpGet("{campaignId}")]
         public async Task<IActionResult> GetAll(Guid campaignId)
         {

@@ -14,6 +14,7 @@ namespace rpg.Campaign.Characters.Services
 {
     public interface ICharacterService
     {
+        public Task<CharacterResponse> Get(Guid id);
         public Task<List<CharacterSimpleResponse>> GetAll(Guid campaignId);
         public Character RollCharacter(CharacterRollRequest request);
         public Task<bool> AddCharacter(AddCharacterRequest request);
@@ -29,6 +30,21 @@ namespace rpg.Campaign.Characters.Services
             RpgContext rpgContext)
         {
             _rpgContext = rpgContext;
+        }
+
+        public async Task<CharacterResponse> Get(Guid id)
+        {
+            var result = await _rpgContext.Characters.Where(_ => _.Id == id)
+                .Select(character => new CharacterResponse
+                {
+                    Characteristics = character.Characteristics.Select(_ =>
+                    new CharacteristicResponse(_)).ToList(),
+                    Skills = character.Skills.Select(_ => new SkillResponse(_)).ToList(),
+                    FirstName = character.FirstName,
+                    Id = character.Id,
+                    LastName = character.LastName,
+                }).FirstOrDefaultAsync();
+            return result;
         }
 
         public async Task<List<CharacterSimpleResponse>> GetAll(Guid campaignId)
