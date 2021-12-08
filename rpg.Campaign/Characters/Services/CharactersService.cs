@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using rpg.Campaign.Characters.Models.Request;
 using rpg.Campaign.Characters.Models.Response;
+using rpg.Common.Helpers;
 using rpg.DAO;
 using rpg.System.Interfaces;
 using rpg.System.Models;
@@ -14,25 +16,29 @@ namespace rpg.Campaign.Characters.Services
 {
     public interface ICharacterService
     {
-        public Task<CharacterResponse> Get(Guid id);
-        public Task<List<CharacterSimpleResponse>> GetAll(Guid campaignId);
+        public Task<CharacterResponse> GetAsync(Guid id);
+        public Task<List<CharacterSimpleResponse>> GetAllAsync(Guid campaignId);
         public Character RollCharacter(CharacterRollRequest request);
-        public Task<bool> AddCharacter(AddCharacterRequest request);
+        public Task<bool> AddCharacterAsync(AddCharacterRequest request);
         public List<Characteristic> RollAttributes(CharacterRollRequest request);
-        public List<string> GetRaces(string systemName);
+        public List<string> GetRacesAsync(string systemName);
+        public Task<bool> DeleteAsync(Guid id);
     }
     public class CharacterService : ICharacterService
     {
         ISystem system;
         private readonly RpgContext _rpgContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CharacterService(
-            RpgContext rpgContext)
+            RpgContext rpgContext,
+            IHttpContextAccessor httpContextAccessor)
         {
             _rpgContext = rpgContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<CharacterResponse> Get(Guid id)
+        public async Task<CharacterResponse> GetAsync(Guid id)
         {
             var result = await _rpgContext.Characters.Where(_ => _.Id == id)
                 .Select(character => new CharacterResponse
@@ -48,7 +54,7 @@ namespace rpg.Campaign.Characters.Services
             return result;
         }
 
-        public async Task<List<CharacterSimpleResponse>> GetAll(Guid campaignId)
+        public async Task<List<CharacterSimpleResponse>> GetAllAsync(Guid campaignId)
         {
             var result = await _rpgContext.Characters
                 .Where(_ => _.CampaignId == campaignId)
@@ -77,13 +83,13 @@ namespace rpg.Campaign.Characters.Services
             return result;
         }
 
-        public List<string> GetRaces(string systemName)
+        public List<string> GetRacesAsync(string systemName)
         {
             system = GetSystem(systemName);
             return system.GetRaces();
         }
 
-        public async Task<bool> AddCharacter(AddCharacterRequest request)
+        public async Task<bool> AddCharacterAsync(AddCharacterRequest request)
         {
             //throw new NotImplementedException();
             var character = new DAO.Models.Character.Character
@@ -121,6 +127,28 @@ namespace rpg.Campaign.Characters.Services
                 "cthulhu" => new CallOfCthulhu.Services.CallOfCthulhu(),
                 _ => new CallOfCthulhu.Services.CallOfCthulhu(),
             };
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            if(id == null) return false;
+            var item = await _rpgContext.Characters
+                .Where(_ => _.Id == id)
+                .Where(_ => _.Campaign.UserId == _httpContextAccessor.GetUserId())
+                .FirstOrDefaultAsync();
+            if (item == null) return false;
+            var skills = await _rpgContext.Skills
+                .Where(_ => _.CharacterId == id)
+                .ToListAsync();
+            var characteristics = await _rpgContext.Characteristics
+                .Where(_ => _.CharacterId == id)
+                .ToListAsync();
+            _rpgContext.RemoveRange(skills);
+            _rpgContext.RemoveRange(characteristics);
+            //await _rpgContext.SaveChangesAsync();
+            _rpgContext.Remove(item);
+            var result = await _rpgContext.SaveChangesAsync();
+            return result > 0;
         }
     }
 }

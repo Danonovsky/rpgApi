@@ -19,7 +19,7 @@ namespace rpg.DAO
         {
             foreach(var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(_ => _.GetForeignKeys()))
             {
-                relationship.DeleteBehavior = DeleteBehavior.NoAction;
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
             base.OnModelCreating(modelBuilder);

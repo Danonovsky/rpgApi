@@ -24,7 +24,7 @@ namespace rpg.Campaign.Characters.Controllers
         [HttpGet("Get/{characterId}")]
         public async Task<IActionResult> Get(Guid characterId)
         {
-            var result = await _characterService.Get(characterId);
+            var result = await _characterService.GetAsync(characterId);
             if(result == null) return NotFound();
             else return Ok(result);
         }
@@ -32,14 +32,14 @@ namespace rpg.Campaign.Characters.Controllers
         [HttpGet("{campaignId}")]
         public async Task<IActionResult> GetAll(Guid campaignId)
         {
-            var result = await _characterService.GetAll(campaignId);
+            var result = await _characterService.GetAllAsync(campaignId);
             return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(AddCharacterRequest request)
         {
-            var result = await _characterService.AddCharacter(request);
+            var result = await _characterService.AddCharacterAsync(request);
             if (result)
             {
                 return Ok();
@@ -66,8 +66,16 @@ namespace rpg.Campaign.Characters.Controllers
         [HttpGet("Races/{systemName}")]
         public IActionResult GetRaces(string systemName)
         {
-            var result = _characterService.GetRaces(systemName);
+            var result = _characterService.GetRacesAsync(systemName);
             return Ok(result);
+        }
+
+        [HttpDelete("{characterId}")]
+        public async Task<IActionResult> Delete(Guid characterId)
+        {
+            var result = await _characterService.DeleteAsync(characterId);
+            if (result) return Ok();
+            else return BadRequest();
         }
     }
 }
