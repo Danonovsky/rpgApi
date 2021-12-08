@@ -15,6 +15,8 @@ namespace rpg.DAO.Models.Game
         public Guid UserId { get; set; }
         public virtual User.User User { get; set; }
 
+        public virtual ICollection<Character.Character> Characters { get; set; }
         public virtual ICollection<CampaignPlayer> CampaignPlayers { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
     }
 }
