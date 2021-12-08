@@ -10,6 +10,7 @@ namespace rpg.DAO.Models.Character
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Race { get; set; }
 
         public virtual ICollection<Characteristic> Characteristics { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }

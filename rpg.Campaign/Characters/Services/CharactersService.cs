@@ -43,6 +43,7 @@ namespace rpg.Campaign.Characters.Services
                     FirstName = character.FirstName,
                     Id = character.Id,
                     LastName = character.LastName,
+                    Race = character.Race,
                 }).FirstOrDefaultAsync();
             return result;
         }
@@ -105,7 +106,8 @@ namespace rpg.Campaign.Characters.Services
                         Name = _.Name,
                         Value = _.Value
                     }
-                ).ToList()
+                ).ToList(),
+                Race = request.Character.Race.Name
             };
             _rpgContext.Add(character);
             var result = await _rpgContext.SaveChangesAsync();
