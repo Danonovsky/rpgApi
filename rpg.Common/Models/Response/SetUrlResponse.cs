@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace rpg.Campaign.Campaigns.Models.Response
+namespace rpg.Common.Models.Response
 {
-    public class SetImageUrlResponse
+    public class SetUrlResponse
     {
         public string Url { get; set; }
     }

@@ -4,6 +4,7 @@ using rpg.Campaign.Campaigns.Models.Request;
 using rpg.Campaign.Campaigns.Models.Response;
 using rpg.Common;
 using rpg.Common.Helpers;
+using rpg.Common.Models.Response;
 using rpg.Common.Services;
 using rpg.DAO;
 using System;
@@ -24,7 +25,7 @@ namespace rpg.Campaign.Campaigns.Services
         public Task<CampaignResponse> AddCampaignAsync(CampaignRequest request);
         public Task<CampaignResponse> EditCampaignAsync(CampaignRequest request, Guid id);
         public Task<bool> DeleteCampaignAsync(Guid id);
-        public Task<SetImageUrlResponse> SetUrl(Guid id);
+        public Task<SetUrlResponse> SetUrl(Guid id);
         public Task<bool> JoinCampaign(Guid id);
     }
 
@@ -126,7 +127,7 @@ namespace rpg.Campaign.Campaigns.Services
             else return null;
         }
 
-        public async Task<SetImageUrlResponse> SetUrl(Guid id)
+        public async Task<SetUrlResponse> SetUrl(Guid id)
         {
             var item = await _rpgContext.Campaigns.Where(_ => _.Id == id).FirstOrDefaultAsync();
             if (item == null) return null;
@@ -139,7 +140,7 @@ namespace rpg.Campaign.Campaigns.Services
             int result = await _rpgContext.SaveChangesAsync();
 
             if (result == 0) return null;
-            return new SetImageUrlResponse
+            return new SetUrlResponse
             {
                 Url = url
             };
