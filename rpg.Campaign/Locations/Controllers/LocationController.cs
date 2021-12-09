@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace rpg.Campaign.Locations.Controllers
 {
+    [Route("[controller]")]
+    [ApiController]
     public class LocationController : ControllerBase
     {
         private readonly ILocationService _locationService;
@@ -42,7 +44,7 @@ namespace rpg.Campaign.Locations.Controllers
             return BadRequest();
         }
 
-        [HttpPatch]
+        [HttpPut]
         public async Task<IActionResult> Update(EditLocationRequest request)
         {
             var result = await _locationService.Update(request);
