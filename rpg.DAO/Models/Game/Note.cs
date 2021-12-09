@@ -4,9 +4,10 @@ using System.Text;
 
 namespace rpg.DAO.Models.Game
 {
-    public class Location : BaseEntity
+    public class Note : BaseEntity
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
         public string Url { get; set; }
 
         public Guid CampaignId { get; set; }

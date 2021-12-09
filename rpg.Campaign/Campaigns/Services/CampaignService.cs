@@ -134,7 +134,7 @@ namespace rpg.Campaign.Campaigns.Services
             var url = await _fileService.Upload();
             if (url == null) return null;
 
-            item.ImageUrl = url;
+            item.Url = url;
             _rpgContext.Update(item);
             int result = await _rpgContext.SaveChangesAsync();
 

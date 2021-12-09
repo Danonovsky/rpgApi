@@ -10,7 +10,7 @@ namespace rpg.DAO.Models.Game
         public string Description { get; set; }
         public bool IsPublic { get; set; }
         public string System { get; set; }
-        public string? ImageUrl { get; set; }
+        public string? Url { get; set; }
 
         public Guid UserId { get; set; }
         public virtual User.User User { get; set; }
@@ -18,5 +18,6 @@ namespace rpg.DAO.Models.Game
         public virtual ICollection<Character.Character> Characters { get; set; }
         public virtual ICollection<CampaignPlayer> CampaignPlayers { get; set; }
         public virtual ICollection<Location> Locations { get; set; }
+        public virtual ICollection<Note> Notes { get; set; }
     }
 }

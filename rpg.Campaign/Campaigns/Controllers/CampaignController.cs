@@ -84,7 +84,7 @@ namespace rpg.Campaign.Controllers
             else return UnprocessableEntity();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("Img/{id}")]
         [Authorize]
         public async Task<IActionResult> SetUrl(Guid id)
         {
