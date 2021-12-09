@@ -4,6 +4,7 @@ using rpg.Campaign.Campaigns.Models.Request;
 using rpg.Campaign.Campaigns.Models.Response;
 using rpg.Common;
 using rpg.Common.Helpers;
+using rpg.Common.Services;
 using rpg.DAO;
 using System;
 using System.Collections.Generic;
@@ -31,13 +32,16 @@ namespace rpg.Campaign.Campaigns.Services
     {
         private readonly RpgContext _rpgContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IFileService _fileService;
 
         public CampaignService(
             RpgContext rpgContext,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IFileService fileService)
         {
             _httpContextAccessor = httpContextAccessor;
             _rpgContext = rpgContext;
+            _fileService = fileService;
         }
 
         public async Task<IEnumerable<CampaignResponse>> FindPublicCampaignsAsync()
@@ -126,36 +130,19 @@ namespace rpg.Campaign.Campaigns.Services
         {
             var item = await _rpgContext.Campaigns.Where(_ => _.Id == id).FirstOrDefaultAsync();
             if (item == null) return null;
-            try
+
+            var url = await _fileService.Upload();
+            if (url == null) return null;
+
+            item.ImageUrl = url;
+            _rpgContext.Update(item);
+            int result = await _rpgContext.SaveChangesAsync();
+
+            if (result == 0) return null;
+            return new SetImageUrlResponse
             {
-                var file = _httpContextAccessor.HttpContext.Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if(file.Length > 0)
-                {
-                    var fileName = Guid.NewGuid() + "." + file.FileName.Split(".").Last();
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    using (var fs = new FileStream(fullPath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(fs);
-                    }
-                    item.ImageUrl = dbPath;
-                    _rpgContext.Update(item);
-                    int result = await _rpgContext.SaveChangesAsync();
-                    if (result == 0) return null;
-                    return new SetImageUrlResponse
-                    {
-                        Url = dbPath
-                    };
-                } else
-                {
-                    return null;
-                }
-            } catch(Exception)
-            {
-                return null;
-            }
+                Url = url
+            };
         }
 
         public async Task<bool> JoinCampaign(Guid id)

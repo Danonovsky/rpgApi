@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using rpg.Auth;
 using rpg.Campaign;
+using rpg.Common;
 using rpg.DAO;
 using rpg.Game.Hubs;
 using System;
@@ -45,6 +46,7 @@ namespace App
             });
             services.AddCors();
             services.AddDbExtension(Configuration);
+            services.AddCommonExtension();
             services.AddAuthExtension(Configuration);
             services.AddCampaignExtension();
             services.AddSignalR();
