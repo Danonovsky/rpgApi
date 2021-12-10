@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Notes\Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\rpg.Auth\rpg.Auth.csproj" />
     <ProjectReference Include="..\rpg.CallOfCthulhu\rpg.CallOfCthulhu.csproj" />
     <ProjectReference Include="..\rpg.Common\rpg.Common.csproj" />

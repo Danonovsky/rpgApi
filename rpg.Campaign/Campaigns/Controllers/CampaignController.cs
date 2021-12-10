@@ -16,6 +16,7 @@ namespace rpg.Campaign.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class CampaignController : ControllerBase
     {
         private ICampaignService _campaignService;
@@ -26,28 +27,24 @@ namespace rpg.Campaign.Controllers
         }
 
         [HttpGet("public")]
-        [Authorize]
         public async Task<IActionResult> FindPublicCampaigns()
         {
             return Ok(await _campaignService.FindPublicCampaignsAsync());
         }
 
         [HttpGet("user")]
-        [Authorize]
         public async Task<IActionResult> FindUserCampaigns()
         {
             return Ok(await _campaignService.FindUserCampaignsAsync());
         }
 
         [HttpGet("guest")]
-        [Authorize]
         public async Task<IActionResult> FindGuestCampaigns()
         {
             return Ok(await _campaignService.FindGuestCampaignsAsync());
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetCampaign(Guid id)
         {
             var result = await _campaignService.GetCampaignAsync(id);
@@ -56,7 +53,6 @@ namespace rpg.Campaign.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddCampaign(CampaignRequest request)
         {
             var result = await _campaignService.AddCampaignAsync(request);
@@ -65,7 +61,6 @@ namespace rpg.Campaign.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> EditCampaign(CampaignRequest request, Guid id)
         {
             if (request == null || id == null) return BadRequest();
@@ -75,7 +70,6 @@ namespace rpg.Campaign.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> DeleteCampaign(Guid id)
         {
             if(id == null) return BadRequest();
@@ -85,7 +79,6 @@ namespace rpg.Campaign.Controllers
         }
 
         [HttpPatch("Img/{id}")]
-        [Authorize]
         public async Task<IActionResult> SetUrl(Guid id)
         {
             if(id == null) return BadRequest();
@@ -95,7 +88,6 @@ namespace rpg.Campaign.Controllers
         }
 
         [HttpGet("Join/{id}")]
-        [Authorize]
         public async Task<IActionResult> JoinCampaign(Guid id)
         {
             var result = await _campaignService.JoinCampaign(id);

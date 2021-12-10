@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using rpg.Campaign.Locations.Models.Request;
 using rpg.Campaign.Locations.Services;
 using System;
@@ -10,6 +11,7 @@ namespace rpg.Campaign.Locations.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class LocationController : ControllerBase
     {
         private readonly ILocationService _locationService;

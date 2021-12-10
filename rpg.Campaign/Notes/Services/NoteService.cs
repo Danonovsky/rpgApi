@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using rpg.Campaign.Locations.Models.Request;
 using rpg.Campaign.Locations.Models.Response;
+using rpg.Campaign.Notes.Models.Request;
+using rpg.Campaign.Notes.Models.Response;
 using rpg.Common.Models.Response;
 using rpg.Common.Services;
 using rpg.DAO;
+using rpg.DAO.Models.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +17,9 @@ namespace rpg.Campaign.Notes.Services
 {
     public interface INoteService
     {
-        public Task<List<LocationResponse>> GetAll(Guid campaignId);
-        public Task<LocationResponse> Get(Guid id);
-        public Task<LocationResponse> Add(AddLocationRequest request);
+        public Task<List<NoteResponse>> GetAll(Guid campaignId);
+        public Task<NoteResponse> Get(Guid id);
+        public Task<NoteResponse> Add(AddNoteRequest request);
         public Task<bool> Delete(Guid id);
         public Task<SetUrlResponse> SetUrl(Guid id);
     }
@@ -33,24 +36,86 @@ namespace rpg.Campaign.Notes.Services
             _rpgContext = rpgContext;
             _fileService = fileService;
         }
-        public Task<LocationResponse> Add(AddLocationRequest request)
+        public async Task<NoteResponse> Add(AddNoteRequest request)
         {
-            throw new NotImplementedException();
+            if (request == null) return null;
+
+            var add = await _rpgContext.Notes
+                .AddAsync(new Note
+                {
+                    CampaignId = request.CampaignId,
+                    CreateDateTime = DateTime.Now,
+                    Description = request.Description,
+                    Title = request.Title,
+                    Url = ""
+                });
+            var result = await _rpgContext.SaveChangesAsync();
+            if (result > 0)
+            {
+                return new NoteResponse
+                {
+                    CampaignId = add.Entity.CampaignId,
+                    Id = add.Entity.Id,
+                    Title = add.Entity.Title,
+                    Description = add.Entity.Description,
+                    Url = add.Entity.Url
+                };
+            }
+            else return null;
         }
 
-        public Task<bool> Delete(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            if (id == null) return false;
+            var item = await _rpgContext.Notes
+                .Where(_ => _.Id == id)
+                .Select(_ => new NoteResponse
+                {
+                    CampaignId = _.CampaignId,
+                    Description = _.Description,
+                    Title = _.Title,
+                    Id = _.Id,
+                    Url = _.Url
+                })
+                .FirstOrDefaultAsync();
+            if (item == null) return false;
+            _rpgContext.Remove(item);
+            var result = await _rpgContext.SaveChangesAsync();
+            return result > 0;
         }
 
-        public Task<LocationResponse> Get(Guid id)
+        public async Task<NoteResponse> Get(Guid id)
         {
-            throw new NotImplementedException();
+            if (id == null) return null;
+            var result = await _rpgContext.Notes
+                .Where(_ => _.Id == id)
+                .Select(_ => new NoteResponse
+                {
+                    CampaignId = _.CampaignId,
+                    Description = _.Description,
+                    Title = _.Title,
+                    Id = _.Id,
+                    Url = _.Url
+                })
+                .FirstOrDefaultAsync();
+            return result;
         }
 
-        public Task<List<LocationResponse>> GetAll(Guid campaignId)
+        public async Task<List<NoteResponse>> GetAll(Guid campaignId)
         {
-            throw new NotImplementedException();
+            if (campaignId == null) return null;
+            var result = await _rpgContext.Notes
+                .Where(_ => _.CampaignId == campaignId)
+                .Select(_ => new NoteResponse
+                {
+                    CampaignId = _.CampaignId,
+                    Description = _.Description,
+                    Title = _.Title,
+                    Id = _.Id,
+                    Url = _.Url
+                })
+                .ToListAsync();
+            return result;
         }
 
         public async Task<SetUrlResponse> SetUrl(Guid id)
