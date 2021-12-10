@@ -69,14 +69,6 @@ namespace rpg.Campaign.Notes.Services
             if (id == null) return false;
             var item = await _rpgContext.Notes
                 .Where(_ => _.Id == id)
-                .Select(_ => new NoteResponse
-                {
-                    CampaignId = _.CampaignId,
-                    Description = _.Description,
-                    Title = _.Title,
-                    Id = _.Id,
-                    Url = _.Url
-                })
                 .FirstOrDefaultAsync();
             if (item == null) return false;
             _rpgContext.Remove(item);

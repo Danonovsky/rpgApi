@@ -30,7 +30,7 @@ namespace rpg.Campaign.Notes.Controllers
             return Ok(result);
         }
 
-        [HttpGet("List/{id}")]
+        [HttpGet("List/{campaignId}")]
         public async Task<IActionResult> GetAll(Guid campaignId)
         {
             var result = await _noteService.GetAll(campaignId);
