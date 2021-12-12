@@ -123,6 +123,13 @@ namespace rpg.Campaign.Players.Services
             var item = await _rpgContext.CampaignPlayers
                 .Where(_ => _.Id == playerId)
                 .FirstOrDefaultAsync();
+            if(item.CharacterId != null)
+            {
+                var character = await _rpgContext.Characters
+                    .Where(_ => _.Id == item.CharacterId)
+                    .FirstOrDefaultAsync();
+                _rpgContext.Remove(character);
+            }
             _rpgContext.Remove(item);
             var result = await _rpgContext.SaveChangesAsync();
             return result > 0;
