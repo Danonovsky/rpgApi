@@ -7,6 +7,7 @@ using rpg.Common.Helpers;
 using rpg.Common.Models.Response;
 using rpg.Common.Services;
 using rpg.DAO;
+using rpg.DAO.Models.Game;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -154,7 +155,7 @@ namespace rpg.Campaign.Campaigns.Services
             if(campaign == null) return false;
             bool alreadyJoined = (await _rpgContext.Campaigns.Where(_ => _.CampaignPlayers.Any(_ => _.UserId == userId)).ToListAsync()).Count != 0;
             if (alreadyJoined) return false;
-            _rpgContext.CampaignPlayers.Add(new DAO.Models.Game.CampaignPlayer
+            _rpgContext.CampaignPlayers.Add(new CampaignPlayer
             {
                 CampaignId = id,
                 UserId = userId
