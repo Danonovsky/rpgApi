@@ -30,12 +30,27 @@ namespace rpg.Campaign.Players.Controllers
             return Ok(result);
         }
 
+        [HttpGet("Available/{campaignId}")]
+        public async Task<IActionResult> GetAvailableCharacters(Guid campaignId)
+        {
+            var result = await _playerService.GetAvailableCharacters(campaignId);
+            return Ok(result);
+        }
+
         [HttpPost("AssignCharacter")]
         public async Task<IActionResult> AssignCharacter(AssignCharacterRequest request)
         {
             var result = await _playerService.AssignCharacter(request);
-            if (result == null) return BadRequest();
-            return Ok(result);
+            if (!result) return BadRequest();
+            return Ok();
+        }
+
+        [HttpPost("UnassignCharacter")]
+        public async Task<IActionResult> AssignCharacter(UnassignCharacterRequest request)
+        {
+            var result = await _playerService.UnassignCharacter(request);
+            if (!result) return BadRequest();
+            return Ok();
         }
 
         [HttpDelete("{id}")]

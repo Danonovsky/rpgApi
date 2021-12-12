@@ -4,9 +4,9 @@ using System.Text;
 
 namespace rpg.Campaign.Players.Models.Request
 {
-    public class AssignCharacterRequest
+    public class UnassignCharacterRequest
     {
         public Guid PlayerId { get; set; }
-        public Nullable<Guid> CharacterId { get; set; }
+        public Guid CampaignId { get; set; }
     }
 }

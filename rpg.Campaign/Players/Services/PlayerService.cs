@@ -15,9 +15,11 @@ namespace rpg.Campaign.Players.Services
     public interface IPlayerService
     {
         public Task<List<CampaignPlayerResponse>> GetAll(Guid campaignId);
-        public Task<CampaignPlayerResponse> AssignCharacter(AssignCharacterRequest request);
-        public Task<bool> Remove(Guid playerId);
+        public Task<bool> AssignCharacter(AssignCharacterRequest request);
+        public Task<bool> UnassignCharacter(UnassignCharacterRequest request);
 
+        public Task<bool> Remove(Guid playerId);
+        public Task<List<CharacterResponse>> GetAvailableCharacters(Guid campaignId);
     }
     public class PlayerService : IPlayerService
     {
@@ -49,31 +51,70 @@ namespace rpg.Campaign.Players.Services
             return result;
         }
 
-        public async Task<CampaignPlayerResponse> AssignCharacter(AssignCharacterRequest request)
+        public async Task<List<CharacterResponse>> GetAvailableCharacters(Guid campaignId)
         {
-            if(request == null) return null;
+            if (campaignId == null) return null;
+            var result = await _rpgContext.Characters
+                .Where(_ => _.CampaignId == campaignId)
+                .Where(_ => _.CampaignPlayerId == null)
+                .Select(character => new CharacterResponse
+                {
+                    Characteristics = character.Characteristics
+                        .Select(_ => new CharacteristicResponse(_))
+                        .ToList(),
+                    Skills = character.Skills
+                        .Select(_ => new SkillResponse(_))
+                        .ToList(),
+                    FirstName = character.FirstName,
+                    Id = character.Id,
+                    LastName = character.LastName,
+                    Race = character.Race,
+                }).ToListAsync();
+            return result;
+        } 
+
+        public async Task<bool> AssignCharacter(AssignCharacterRequest request)
+        {
+            if(request == null) return false;
             var player = await _rpgContext.CampaignPlayers
                 .Where(_ => _.Id == request.PlayerId)
+                .Include(_ => _.Character).ThenInclude(_ => _.Skills)
+                .Include(_ => _.Character).ThenInclude(_ => _.Characteristics)
+                .Include(_ => _.User)
                 .FirstOrDefaultAsync();
-            if (player == null) return null;
+            if (player == null) return false;
             player.CharacterId = request.CharacterId;
+
+            var character = await _rpgContext.Characters
+                .Where(_ => _.Id == request.CharacterId)
+                .FirstOrDefaultAsync();
+            character.CampaignPlayerId = request.PlayerId;
+
             var result = await _rpgContext.SaveChangesAsync();
-            if(result > 0)
+            return result > 0;
+        }
+
+        public async Task<bool> UnassignCharacter(UnassignCharacterRequest request)
+        {
+            if(request == null) return false;
+            var player = await _rpgContext.CampaignPlayers
+                .Where(_ => _.Id == request.PlayerId)
+                .Where(_ => _.CampaignId == request.CampaignId)
+                .FirstOrDefaultAsync();
+            if(player == null) return false;
+            player.CharacterId = null;
+
+            var character = await _rpgContext.Characters
+                .Where(_ => _.CampaignPlayerId == request.PlayerId)
+                .Where(_ => _.CampaignId == request.CampaignId)
+                .FirstOrDefaultAsync();
+            if(character != null)
             {
-                return new CampaignPlayerResponse
-                {
-                    CampaignId = player.CampaignId,
-                    Id = player.Id,
-                    User = new PublicUserResponse(player.User),
-                    Character = new CharacterSimpleResponse
-                    {
-                        Id = player.Character.Id,
-                        LastName = player.Character.LastName,
-                        FirstName = player.Character.FirstName
-                    }
-                };
+                character.CampaignPlayerId = null;
             }
-            return null;
+
+            var result = await _rpgContext.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<bool> Remove(Guid playerId)
