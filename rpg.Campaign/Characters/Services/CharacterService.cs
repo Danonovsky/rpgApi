@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using rpg.Campaign.Characters.Models.Request;
 using rpg.Campaign.Characters.Models.Response;
 using rpg.Common.Helpers;
+using rpg.Common.Models.Response;
+using rpg.Common.Services;
 using rpg.DAO;
 using rpg.System.Interfaces;
 using rpg.System.Models;
@@ -23,19 +25,23 @@ namespace rpg.Campaign.Characters.Services
         public List<Characteristic> RollAttributes(CharacterRollRequest request);
         public List<string> GetRacesAsync(string systemName);
         public Task<bool> DeleteAsync(Guid id);
+        public Task<SetUrlResponse> SetUrl(Guid id);
     }
     public class CharacterService : ICharacterService
     {
         ISystem system;
         private readonly RpgContext _rpgContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IFileService _fileService;
 
         public CharacterService(
             RpgContext rpgContext,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IFileService fileService)
         {
             _rpgContext = rpgContext;
             _httpContextAccessor = httpContextAccessor;
+            _fileService = fileService;
         }
 
         public async Task<CharacterResponse> GetAsync(Guid id)
@@ -50,6 +56,7 @@ namespace rpg.Campaign.Characters.Services
                     Id = character.Id,
                     LastName = character.LastName,
                     Race = character.Race,
+                    Url = character.Url
                 }).FirstOrDefaultAsync();
             return result;
         }
@@ -63,7 +70,8 @@ namespace rpg.Campaign.Characters.Services
                     {
                         Id = _.Id,
                         FirstName = _.FirstName,
-                        LastName = _.LastName
+                        LastName = _.LastName,
+                        Url = _.Url
                     })
                 .ToListAsync();
             return result;
@@ -149,6 +157,25 @@ namespace rpg.Campaign.Characters.Services
             _rpgContext.Remove(item);
             var result = await _rpgContext.SaveChangesAsync();
             return result > 0;
+        }
+
+        public async Task<SetUrlResponse> SetUrl(Guid id)
+        {
+            var item = await _rpgContext.Characters.Where(_ => _.Id == id).FirstOrDefaultAsync();
+            if (item == null) return null;
+
+            var url = await _fileService.Upload();
+            if (url == null) return null;
+
+            item.Url = url;
+            _rpgContext.Update(item);
+            int result = await _rpgContext.SaveChangesAsync();
+
+            if (result == 0) return null;
+            return new SetUrlResponse
+            {
+                Url = url
+            };
         }
     }
 }

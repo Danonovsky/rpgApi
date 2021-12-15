@@ -77,5 +77,14 @@ namespace rpg.Campaign.Characters.Controllers
             if (result) return Ok();
             else return BadRequest();
         }
+
+        [HttpPatch("Img/{id}")]
+        public async Task<IActionResult> SetUrl(Guid id)
+        {
+            if (id == null) return BadRequest();
+            var result = await _characterService.SetUrl(id);
+            if (result == null) return BadRequest();
+            return Ok(result);
+        }
     }
 }
