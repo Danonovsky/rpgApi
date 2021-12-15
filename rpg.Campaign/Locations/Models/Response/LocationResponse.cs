@@ -9,5 +9,6 @@ namespace rpg.Campaign.Locations.Models.Response
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Guid CampaignId { get; set; }
+        public string Url { get; set; }
     }
 }

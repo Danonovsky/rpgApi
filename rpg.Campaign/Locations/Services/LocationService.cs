@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using rpg.Campaign.Locations.Models.Request;
 using rpg.Campaign.Locations.Models.Response;
+using rpg.Common.Models.Response;
+using rpg.Common.Services;
 using rpg.DAO;
 using rpg.DAO.Models.Game;
 using System;
@@ -18,16 +20,20 @@ namespace rpg.Campaign.Locations.Services
         public Task<LocationResponse> Add(AddLocationRequest request);
         public Task<LocationResponse> Update(EditLocationRequest request);
         public Task<bool> Delete(Guid id);
+        public Task<SetUrlResponse> SetUrl(Guid id);
     }
 
     public class LocationService : ILocationService
     {
         private readonly RpgContext _rpgContext;
+        private readonly IFileService _fileService;
 
         public LocationService(
-            RpgContext rpgContext)
+            RpgContext rpgContext,
+            IFileService fileService)
         {
             _rpgContext = rpgContext;
+            _fileService = fileService;
         }
 
         public async Task<List<LocationResponse>> GetAll(Guid campaignId)
@@ -39,7 +45,8 @@ namespace rpg.Campaign.Locations.Services
                 {
                     CampaignId = location.CampaignId,
                     Id = location.Id,
-                    Name = location.Name
+                    Name = location.Name,
+                    Url = location.Url
                 })
                 .ToListAsync();
             return result;
@@ -53,7 +60,8 @@ namespace rpg.Campaign.Locations.Services
                 {
                     Id = _.Id,
                     Name = _.Name,
-                    CampaignId = _.CampaignId
+                    CampaignId = _.CampaignId,
+                    Url = _.Url
                 })
                 .FirstOrDefaultAsync();
             return result;
@@ -109,6 +117,25 @@ namespace rpg.Campaign.Locations.Services
             _rpgContext.Remove(fromDb);
             var result = await _rpgContext.SaveChangesAsync();
             return result > 0;
+        }
+
+        public async Task<SetUrlResponse> SetUrl(Guid id)
+        {
+            var item = await _rpgContext.Locations.Where(_ => _.Id == id).FirstOrDefaultAsync();
+            if (item == null) return null;
+
+            var url = await _fileService.Upload();
+            if (url == null) return null;
+
+            item.Url = url;
+            _rpgContext.Update(item);
+            int result = await _rpgContext.SaveChangesAsync();
+
+            if (result == 0) return null;
+            return new SetUrlResponse
+            {
+                Url = url
+            };
         }
     }
 }

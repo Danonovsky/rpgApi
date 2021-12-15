@@ -61,5 +61,14 @@ namespace rpg.Campaign.Locations.Controllers
             if (result) return Ok();
             return BadRequest();
         }
+
+        [HttpPatch("Img/{id}")]
+        public async Task<IActionResult> SetUrl(Guid id)
+        {
+            if (id == null) return BadRequest();
+            var result = await _locationService.SetUrl(id);
+            if (result == null) return BadRequest();
+            return Ok(result);
+        }
     }
 }
