@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using rpg.Auth.Models.Request;
 using rpg.Auth.Models.Response;
+using rpg.Common.Models.Response;
+using rpg.Common.Services;
 using rpg.DAO;
 using rpg.DAO.Models.User;
 using System;
@@ -19,21 +21,59 @@ namespace rpg.Auth.Services
     {
         public Task<LoginResponse> Login(LoginRequest request);
         public Task<bool> Register(SignupRequest request);
+        public Task<PublicUserResponse> Get(Guid id);
+        public Task<SetUrlResponse> SetUrl(Guid id);
 
     }
     public class AuthService : IAuthService
     {
         private RpgContext _rpgContext { get; set; }
         private IConfiguration _configuration { get; set; }
+        private IFileService _fileService { get; set; }
 
         public AuthService(
             RpgContext rpgContext,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IFileService fileService
             )
         {
             _rpgContext = rpgContext;
             _configuration = configuration;
+            _fileService = fileService;
         }
+
+        public async Task<SetUrlResponse> SetUrl(Guid id)
+        {
+            var item = await _rpgContext.Users
+                .Where(_ => _.Id == id)
+                .FirstOrDefaultAsync();
+            if (item == null) return null;
+
+            var url = await _fileService.Upload();
+            if (url == null) return null;
+
+            item.Url = url;
+            _rpgContext.Update(item);
+            int result = await _rpgContext.SaveChangesAsync();
+
+            if (result == 0) return null;
+            return new SetUrlResponse
+            {
+                Url = url
+            };
+        }
+
+        public async Task<PublicUserResponse> Get(Guid id)
+        {
+            if (id == null) return null;
+            var item = await _rpgContext.Users
+                .Where(_ => _.Id == id)
+                .Select(_ => new PublicUserResponse(_))
+                .FirstOrDefaultAsync();
+            if(item == null) return null;
+            return item;
+        }
+
         public async Task<LoginResponse> Login(LoginRequest request)
         {
             if (request == null)

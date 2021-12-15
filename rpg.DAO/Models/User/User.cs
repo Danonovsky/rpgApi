@@ -9,6 +9,7 @@ namespace rpg.DAO.Models.User
         public string Email { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
+        public string Url { get; set; }
         
         public ICollection<Campaign> Campaigns { get; set; }
         public ICollection<CampaignPlayer> CampaignPlayers { get; set; }

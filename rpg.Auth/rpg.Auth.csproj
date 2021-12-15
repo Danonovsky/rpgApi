@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\rpg.Common\rpg.Common.csproj" />
     <ProjectReference Include="..\rpg.DAO\rpg.DAO.csproj" />
   </ItemGroup>
 

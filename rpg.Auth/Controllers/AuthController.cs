@@ -22,6 +22,15 @@ namespace rpg.Auth.Controllers
             _authService = authService;
         }
 
+        [HttpPatch("Img/{id}")]
+        public async Task<IActionResult> SetUrl(Guid id)
+        {
+            if (id == null) return BadRequest();
+            var result = await _authService.SetUrl(id);
+            if (result == null) return BadRequest();
+            return Ok(result);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
@@ -45,6 +54,19 @@ namespace rpg.Auth.Controllers
             } else
             {
                 return UnprocessableEntity(request);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var result = await _authService.Get(id);
+            if(result != null)
+            {
+                return Ok(result);
+            } else
+            {
+                return NotFound(id);
             }
         }
     }

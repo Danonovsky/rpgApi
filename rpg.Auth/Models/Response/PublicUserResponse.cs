@@ -9,11 +9,13 @@ namespace rpg.Auth.Models.Response
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Url { get; set; }
 
         public PublicUserResponse(User user)
         {
             Id = user.Id;
             Name = user.Name;
+            Url = user.Url;
         }
     }
 }
