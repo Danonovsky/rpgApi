@@ -19,5 +19,6 @@ namespace rpg.DAO.Models.Game
         public virtual ICollection<CampaignPlayer> CampaignPlayers { get; set; }
         public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<Note> Notes { get; set; }
+        public virtual ICollection<Item> Items { get; set; }
     }
 }

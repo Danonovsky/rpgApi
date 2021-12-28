@@ -69,7 +69,7 @@ namespace rpg.Campaign.Controllers
             else return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCampaign(Guid id)
         {
             if(id == null) return BadRequest();
