@@ -12,4 +12,8 @@
     <ProjectReference Include="..\rpg.System\rpg.System.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Items\" />
+  </ItemGroup>
+
 </Project>
