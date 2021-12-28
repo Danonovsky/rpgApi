@@ -26,7 +26,7 @@ namespace rpg.Campaign.Campaigns.Models.Response
             IsPublic = campaign.IsPublic;
             System = campaign.System;
             Url = campaign.Url;
-            PlayerCount = campaign.Characters.Count;
+            PlayerCount = campaign.CampaignPlayers.Count;
             LocationCount = campaign.Locations.Count;
             ItemCount = campaign.Items.Count;
             if(campaign.User != null)

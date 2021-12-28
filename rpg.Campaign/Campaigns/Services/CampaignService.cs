@@ -52,7 +52,7 @@ namespace rpg.Campaign.Campaigns.Services
                 .Where(_ => _.IsPublic)
                 .Include(_ => _.User)
                 .Include(_ => _.Locations)
-                .Include(_ => _.Characters)
+                .Include(_ => _.CampaignPlayers)
                 .Include(_ => _.Items)
                 .Select(_ => new CampaignResponse(_))
                 .ToListAsync();
@@ -66,7 +66,7 @@ namespace rpg.Campaign.Campaigns.Services
                 .Where(_ => _.UserId == userId)
                 .Include(_ => _.User)
                 .Include(_ => _.Locations)
-                .Include(_ => _.Characters)
+                .Include(_ => _.CampaignPlayers)
                 .Include(_ => _.Items)
                 .Select(_ => new CampaignResponse(_))
                 .ToListAsync();
@@ -80,7 +80,7 @@ namespace rpg.Campaign.Campaigns.Services
                 .Where(_ => _.CampaignPlayers.Any(_ => _.UserId == userId))
                 .Include(_ => _.User)
                 .Include(_ => _.Locations)
-                .Include(_ => _.Characters)
+                .Include(_ => _.CampaignPlayers)
                 .Include(_ => _.Items)
                 .Select(_ => new CampaignResponse(_))
                 .ToListAsync();
@@ -93,7 +93,7 @@ namespace rpg.Campaign.Campaigns.Services
                 .Where(_ => _.Id == id)
                 .Include(_ => _.User)
                 .Include(_ => _.Locations)
-                .Include(_ => _.Characters)
+                .Include(_ => _.CampaignPlayers)
                 .Include(_ => _.Items)
                 .Select(_ => new CampaignResponse(_))
                 .FirstOrDefaultAsync();
