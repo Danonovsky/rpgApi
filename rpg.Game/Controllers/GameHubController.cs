@@ -20,12 +20,5 @@ namespace rpg.Game.Controllers
         {
             _hub = hub;
         }
-
-        [HttpPost("Roll")]
-        public IActionResult Roll(Roll roll)
-        {
-            _hub.Clients.All.SendAsync("singleRoll", RollService.Roll(roll));
-            return Ok(new { Message = "Request Completed" });
-        }
     }
 }

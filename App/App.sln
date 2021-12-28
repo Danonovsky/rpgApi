@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rpg.Campaign", "..\rpg.Camp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rpg.Common", "..\rpg.Common\rpg.Common.csproj", "{6B95EA95-FFD5-4C9F-9080-233A9910CA22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg.Game", "..\rpg.Game\rpg.Game.csproj", "{B5666C87-B526-4354-8BBD-14C54FA15F9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rpg.Game", "..\rpg.Game\rpg.Game.csproj", "{B5666C87-B526-4354-8BBD-14C54FA15F9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg.Warhammer", "..\rpg.Warhammer\rpg.Warhammer.csproj", "{4970F89B-53D7-47F4-965B-332186888635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{B5666C87-B526-4354-8BBD-14C54FA15F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5666C87-B526-4354-8BBD-14C54FA15F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5666C87-B526-4354-8BBD-14C54FA15F9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4970F89B-53D7-47F4-965B-332186888635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4970F89B-53D7-47F4-965B-332186888635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4970F89B-53D7-47F4-965B-332186888635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4970F89B-53D7-47F4-965B-332186888635}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
