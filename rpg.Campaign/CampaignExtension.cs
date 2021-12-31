@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using rpg.Campaign.Campaigns.Services;
 using rpg.Campaign.Characters.Services;
+using rpg.Campaign.Items.Services;
 using rpg.Campaign.Locations.Services;
 using rpg.Campaign.Notes.Services;
 using rpg.Campaign.Players.Services;
@@ -19,6 +20,7 @@ namespace rpg.Campaign
             services.AddScoped<ILocationService, LocationService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IPlayerService, PlayerService>();
+            services.AddScoped<IItemService, ItemService>();
 
             return services;
         }

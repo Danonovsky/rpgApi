@@ -31,14 +31,14 @@ namespace rpg.CallOfCthulhu.Models
                 },
                 Skills = new List<Skill>
                 {
-                    new Skill(1) { Name = Skills.Locksmith.ToString() },
-                    new Skill(20) { Name = Skills.LibraryUse.ToString() },
-                    new Skill(20) { Name = Skills.Listen.ToString() },
-                    new Skill(25) { Name = Skills.SpotHidden.ToString() },
-                    new Skill(25) { Name = Skills.Brawl.ToString() },
-                    new Skill(5) { Name = Skills.FastTalk.ToString() },
-                    new Skill(20) { Name = Skills.Handgun.ToString() },
-                    new Skill(10) { Name = Skills.Psychology.ToString() }
+                    new Skill(1) { Name = Skills.Locksmith },
+                    new Skill(20) { Name = Skills.LibraryUse },
+                    new Skill(20) { Name = Skills.Listen },
+                    new Skill(25) { Name = Skills.SpotHidden },
+                    new Skill(25) { Name = Skills.Brawl },
+                    new Skill(5) { Name = Skills.FastTalk },
+                    new Skill(20) { Name = Skills.Handgun },
+                    new Skill(10) { Name = Skills.Psychology }
                 }
             }
         };

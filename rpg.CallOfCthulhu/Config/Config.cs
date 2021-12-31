@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 
 namespace rpg.CallOfCthulhu.Config
-{ public static class Races
+{
+    public static class Races
     {
         public const string Human = "Human";
     }
@@ -22,5 +23,19 @@ namespace rpg.CallOfCthulhu.Config
         public const string HitPointsMax = "Max HP";
         public const string MagicPoints = "Magic Points";
         public const string MovementRate = "Movement";
+    }
+
+    public static class Skills
+    {
+        public const string Locksmith = "Locksmith";
+        public const string LibraryUse = "Library Use";
+        public const string Listen = "Listen";
+        public const string SpotHidden = "Spot Hidden";
+        public const string Brawl = "Brawl";
+        public const string FastTalk = "Fast Talk";
+        public const string Handgun = "Handgun";
+        public const string Psychology = "Psychology";
+        public const string Dodge = "Dodge";
+        public const string LanguageOwn = "Language Own";
     }
 }

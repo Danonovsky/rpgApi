@@ -35,5 +35,6 @@ namespace rpg.DAO
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }
