@@ -20,6 +20,10 @@ namespace rpg.Campaign.Items.Services
         public Task<ItemResponse> Add(AddItemRequest request);
         public Task<bool> Delete(Guid id);
         public Task<SetUrlResponse> SetUrl(Guid id);
+        public Task<List<ItemResponse>> GetAvailable(Guid campaignId);
+        public Task<bool> Remove(Guid id);
+        public Task<bool> AssignToCharacter(AssignItemToCharacterRequest request);
+
     }
 
     public class ItemService : IItemService
@@ -126,5 +130,47 @@ namespace rpg.Campaign.Items.Services
                 Url = url
             };
         }
+
+        public async Task<List<ItemResponse>> GetAvailable(Guid campaignId)
+        {
+            if (campaignId == null) return null;
+            var result = await _rpgContext.Items
+                .Where(_ => _.CampaignId == campaignId)
+                .Where(_ => _.CharacterId == null)
+                .Select(_ => new ItemResponse
+                {
+                    CampaignId= _.CampaignId,
+                    Description= _.Description,
+                    Id = _.Id,
+                    Name = _.Name,
+                    Url = _.Url
+                })
+                .ToListAsync();
+            return result;
+        }
+
+public async Task<bool> Remove(Guid id)
+{
+    if(id == null) return false;
+    var item = await _rpgContext.Items
+        .Where(_ => _.Id == id)
+        .FirstOrDefaultAsync();
+    if(item == null) return false;
+    item.CharacterId = null;
+    item.LocationId = null;
+    var result = await _rpgContext.SaveChangesAsync();
+    return result > 0;
+}
+
+public async Task<bool> AssignToCharacter(AssignItemToCharacterRequest request)
+{
+    if(request == null) return false;
+    var item = await _rpgContext.Items
+        .Where(_ => _.Id == request.ItemId)
+        .FirstOrDefaultAsync();
+    item.CharacterId = request.CharacterId;
+    var result = await _rpgContext.SaveChangesAsync();
+    return result > 0;
+}
     }
 }

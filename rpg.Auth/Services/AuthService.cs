@@ -74,64 +74,65 @@ namespace rpg.Auth.Services
             return item;
         }
 
-        public async Task<LoginResponse> Login(LoginRequest request)
+public async Task<LoginResponse> Login(LoginRequest request)
+{
+    if (request == null)
+    {
+        return null;
+    }
+
+    var dbUser = await _rpgContext.Users
+        .Where(_ => _.Email.Equals(request.Email))
+        .FirstOrDefaultAsync();
+    if (dbUser != null && BCrypt.Net.BCrypt.Verify(request.Password, dbUser.Password))
+    {
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                    _configuration.GetSection("AppSettings").GetValue<string>("Secret")
+                    ));
+        var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>()
         {
-            if (request == null)
-            {
-                return null;
-            }
+            new Claim("id", dbUser.Id.ToString()),
+            new Claim("name", dbUser.Name)
+        };
 
-            //todo: hash password
-            var dbUser = await _rpgContext.Users
-                .Where(_ => _.Email.Equals(request.Email) && _.Password.Equals(request.Password))
-                .FirstOrDefaultAsync();
-            if (dbUser != null)
-            {
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                            _configuration.GetSection("AppSettings").GetValue<string>("Secret")
-                            ));
-                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+        var tokenOptions = new JwtSecurityToken(
+            issuer: "http://localhost:5000",
+            audience: "http://localhost:5000",
+            claims: claims,
+            expires: DateTime.Now.AddDays(1),
+            signingCredentials: signinCredentials
+            );
 
-                var claims = new List<Claim>()
-                {
-                    new Claim("id", dbUser.Id.ToString()),
-                    new Claim("name", dbUser.Name)
-                };
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        return new LoginResponse { Token = tokenString };
+    }
+    else
+    {
+        return null;
+    }
+}
 
-                var tokenOptions = new JwtSecurityToken(
-                    issuer: "http://localhost:5000",
-                    audience: "http://localhost:5000",
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: signinCredentials
-                    );
+public async Task<bool> Register(SignupRequest request)
+{   
+    if(request == null) return false;
+    if (!request.ComparePasswords()) return false;
+    var exists = _rpgContext.Users
+        .Where(_ => _.Email == request.Email && _.Name == request.Name)
+        .Any();
+    if (exists) return false;
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return new LoginResponse { Token = tokenString };
-            }
-            else
-            {
-                return null;
-            }
-        }
+    var toDb = new User
+    {
+        Email = request.Email,
+        Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+        Name = request.Name
+    };
+    await _rpgContext.Users.AddAsync(toDb);
+    var result = await _rpgContext.SaveChangesAsync();
 
-        public async Task<bool> Register(SignupRequest request)
-        {   
-            if(request == null) return false;
-            if (!request.ComparePasswords()) return false;
-            var exists = _rpgContext.Users.Where(_ => _.Email == request.Email).Any();
-            if (exists) return false;
-
-            var toDb = new User
-            {
-                Email = request.Email,
-                Password = request.Password,
-                Name = request.Name
-            };
-            await _rpgContext.Users.AddAsync(toDb);
-            await _rpgContext.SaveChangesAsync();
-
-            return true;
-        }
+    return result > 1;
+}
     }
 }

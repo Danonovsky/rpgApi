@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using rpg.Campaign.Characters.Models.Request;
 using rpg.Campaign.Characters.Models.Response;
+using rpg.Campaign.Items.Models.Response;
 using rpg.Common.Helpers;
 using rpg.Common.Models.Response;
 using rpg.Common.Services;
@@ -26,6 +27,7 @@ namespace rpg.Campaign.Characters.Services
         public List<string> GetRacesAsync(string systemName);
         public Task<bool> DeleteAsync(Guid id);
         public Task<SetUrlResponse> SetUrl(Guid id);
+        public Task<List<ItemResponse>> GetAllItems(Guid id);
     }
     public class CharacterService : ICharacterService
     {
@@ -177,5 +179,25 @@ namespace rpg.Campaign.Characters.Services
                 Url = url
             };
         }
+
+        public async Task<List<ItemResponse>> GetAllItems(Guid id)
+        {
+            if(id == null) return null;
+            var character = await _rpgContext.Characters
+                .Where(_ => _.Id == id)
+                .Include(_ => _.Items)
+                .FirstOrDefaultAsync();
+            if(character == null) return null;
+            return character.Items.Select(_ => new ItemResponse
+            {
+                Id = _.Id,
+                Name = _.Name,
+                CampaignId = _.CampaignId,
+                Description = _.Description,
+                Url = _.Url
+
+            }).ToList();
+        }
+
     }
 }

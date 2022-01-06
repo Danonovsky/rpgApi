@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using rpg.DAO;
 
 namespace rpg.DAO.Migrations
 {
     [DbContext(typeof(RpgContext))]
-    partial class RpgContextModelSnapshot : ModelSnapshot
+    [Migration("20220106182643_AddItemMigration")]
+    partial class AddItemMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,9 +209,6 @@ namespace rpg.DAO.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("ModyfiDateTime")
                         .HasColumnType("datetime2");
 
@@ -224,8 +223,6 @@ namespace rpg.DAO.Migrations
                     b.HasIndex("CampaignId");
 
                     b.HasIndex("CharacterId");
-
-                    b.HasIndex("LocationId");
 
                     b.ToTable("Items");
                 });
@@ -401,16 +398,9 @@ namespace rpg.DAO.Migrations
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("rpg.DAO.Models.Game.Location", "Location")
-                        .WithMany("Items")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Campaign");
 
                     b.Navigation("Character");
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("rpg.DAO.Models.Game.Location", b =>
@@ -457,11 +447,6 @@ namespace rpg.DAO.Migrations
                     b.Navigation("Locations");
 
                     b.Navigation("Notes");
-                });
-
-            modelBuilder.Entity("rpg.DAO.Models.Game.Location", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("rpg.DAO.Models.User.User", b =>

@@ -61,5 +61,29 @@ namespace rpg.Campaign.Items.Controllers
             if (result == null) return BadRequest();
             return Ok(result);
         }
+
+        [HttpGet("Available/{campaignId}")]
+        public async Task<IActionResult> GetAllAvailable(Guid campaignId)
+        {
+            var result = await _itemService.GetAvailable(campaignId);
+            if(result == null) return BadRequest();
+            return Ok(result);
+        }
+
+        [HttpDelete("Remove/{id}")]
+        public async Task<IActionResult> Remove(Guid id)
+        {
+            var result = await _itemService.Remove(id);
+            if(!result) return BadRequest();
+            return Ok();
+        }
+
+        [HttpPost("AssignToCharacter")]
+        public async Task<IActionResult> AssignToCharacter(AssignItemToCharacterRequest request)
+        {
+            var result = await _itemService.AssignToCharacter(request);
+            if (!result) return BadRequest();
+            return Ok();
+        }
     }
 }

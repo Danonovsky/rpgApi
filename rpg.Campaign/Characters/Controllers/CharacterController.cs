@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using rpg.Campaign.Characters.Models.Request;
 using rpg.Campaign.Characters.Services;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace rpg.Campaign.Characters.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     [ApiController]
     public class CharacterController : ControllerBase
     {
@@ -86,5 +88,14 @@ namespace rpg.Campaign.Characters.Controllers
             if (result == null) return BadRequest();
             return Ok(result);
         }
+
+        [HttpGet("AllItems/{id}")]
+        public async Task<IActionResult> GetAllItems(Guid id)
+        {
+            if(id == null) return BadRequest();
+            var result = await _characterService.GetAllItems(id);
+            return Ok(result);
+        }
+
     }
 }
