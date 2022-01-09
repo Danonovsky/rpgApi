@@ -38,4 +38,11 @@ namespace rpg.CallOfCthulhu.Config
         public const string Dodge = "Dodge";
         public const string LanguageOwn = "Language Own";
     }
+
+    public static class DifficultyLevels
+    {
+        public const string Regular = "Regular";
+        public const string Hard = "Hard";
+        public const string Extreme = "Extreme";
+    }
 }
