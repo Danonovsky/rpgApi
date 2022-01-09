@@ -9,6 +9,7 @@ namespace rpg.DAO.Models.Game
         public string CharacteristicName { get; set; }
         public string SkillName { get; set; }
         public string DifficultyLevel { get; set; }
+        public string Description { get; set; }
 
         public Guid LocationId { get; set; }
         public virtual Location Location { get; set; }
