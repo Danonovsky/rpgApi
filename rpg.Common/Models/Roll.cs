@@ -20,5 +20,17 @@ namespace rpg.Common.Models
         }
 
         public Roll() { }
+
+        public override string ToString()
+        {
+            string s = $"{Amount}d{Dice}";
+            if (Static > 0) s += $"+{Static}";
+            else if (Static < 0) s += $"{Static}";
+            if(Multiplier != 1)
+            {
+                s = $"({s})*{Multiplier}";
+            }
+            return s;
+        }
     }
 }

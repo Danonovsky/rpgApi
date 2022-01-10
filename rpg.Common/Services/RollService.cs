@@ -17,6 +17,7 @@ namespace rpg.Common.Services
                 result.Dices.Add(_roll);
                 result.Summary += _roll;
             }
+            result.Roll = roll.ToString();
             result.Summary += roll.Static;
             result.SummaryMultiplied = result.Summary * roll.Multiplier;
             return result;
